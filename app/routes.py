@@ -1,10 +1,7 @@
-from flask import Flask, render_template, url_for, flash, redirect
-from config_dir.config import keys
+from app import app
+from flask import render_template, url_for, flash, redirect
 from forms import RegistrationForm, LoginForm
 
-app = Flask(__name__)
-
-app.config['SECRET_KEY'] = keys['secret_key']
 
 posts = [
     {
