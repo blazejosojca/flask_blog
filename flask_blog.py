@@ -33,20 +33,27 @@ def about():
     return render_template('about.html', title='About')
 
 
-@app.route("/register", methods=['GET','POST'])
+@app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         flash(f"A new user: {form.username.data}added. Congratulations!", 'success')
-        return  redirect(url_for('home'))
+        return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route("/login", methods=['GET','POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    if form.validate_on_submit():
+        flash("Login and password are correct. Welcome user! ", "success")
+
+        return redirect(url_for('home'))
+    else:
+        flash('Credentials are incorect', 'danger')
+
     #TODO - verification of credentials
-    return render_template('login.html', title='Register', form=form)
+    return render_template('login.html', title='Login', form=form)
 
 
 if __name__ == '__main__':
