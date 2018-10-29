@@ -1,6 +1,6 @@
-from app import app
 from flask import render_template, url_for, flash, redirect
 from forms import RegistrationForm, LoginForm
+from app import app
 
 
 posts = [
