@@ -13,7 +13,7 @@ posts = [
     {
         'author': 'Jan Kowalski',
         'title': 'Poemat',
-        'content': 'Post 2 contetnt',
+        'content': 'Post 2 content',
         'date_posted': '02.02.2018',
     }
 ]
@@ -51,6 +51,3 @@ def login():
 
     #TODO - verification of credentials
     return render_template('login.html', title='Login', form=form)
-
-
-
