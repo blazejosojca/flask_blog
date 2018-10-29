@@ -1,6 +1,5 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
 *$py.class
 
 # C extensions
@@ -44,9 +43,6 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Translations
-*.mo
-*.pot
 
 # Django stuff:
 *.log
@@ -88,6 +84,7 @@ env.bak/
 venv.bak/
 flask_venv/
 
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -103,3 +100,9 @@ flask_venv/
 
 #.idea
 .idea/
+app.db
+migrations/README
+migrations/alembic.ini
+migrations/env.py
+migrations/script.py.mako
+migrations/versions/
