@@ -2,8 +2,6 @@
 __pycache__/
 *$py.class
 
-# C extensions
-*.so
 
 # Distribution / packaging
 .Python
@@ -106,3 +104,7 @@ migrations/alembic.ini
 migrations/env.py
 migrations/script.py.mako
 migrations/versions/
+argon2_cffi-18.3.0-cp34-abi3-manylinux1_x86_64.whl
+cffi-1.11.5-cp36-cp36m-manylinux1_x86_64.whl
+pycparser-2.19.tar.gz
+six-1.11.0-py2.py3-none-any.whl
