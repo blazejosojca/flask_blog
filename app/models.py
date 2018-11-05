@@ -6,8 +6,8 @@ from flask_login import UserMixin
 
 
 @login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 class User(UserMixin, db.Model):
@@ -20,7 +20,7 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def __repr__(self):
-        return f"<User - {self.username}, {self.email}, {self.image_file} >"
+        return f'<User - {self.username}, {self.email}, {self.image_file} >'
 
     def set_password(self, password):
         self.password_hashed = generate_password_hash(password)
@@ -38,4 +38,4 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f"<Post - {self.title}, {self.date_posted}>"
+        return f'<Post - {self.title}, {self.date_posted}>'
