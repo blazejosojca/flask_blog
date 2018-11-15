@@ -2,6 +2,11 @@
 {% block content %}
     <h1>Account</h1>
     <div>
-        <p>{{ current_user.username }}</p>
+        <p>User: {{ current_user.username }}</p>
+    </div>
+    <div>
+        {% for post in posts %}
+        {{ post.author.username}}
+        {% endfor %}
     </div>
 {% endblock content %}

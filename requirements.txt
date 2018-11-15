@@ -1,10 +1,12 @@
 alembic==1.0.1
 astroid==2.0.4
 click==6.7
+flake8==3.6.0
 Flask==1.0.2
 Flask-Login==0.4.1
 Flask-Migrate==2.3.0
 Flask-SQLAlchemy==2.3.2
+Flask-Testing==0.7.1
 Flask-WTF==0.14.2
 isort==4.3.4
 itsdangerous==0.24
@@ -14,7 +16,9 @@ Mako==1.0.7
 MarkupSafe==1.0
 mccabe==0.6.1
 pkg-resources==0.0.0
+pycodestyle==2.4.0
 pycparser==2.19
+pyflakes==2.0.0
 pylint==2.1.1
 python-dateutil==2.7.3
 python-dotenv==0.9.1
