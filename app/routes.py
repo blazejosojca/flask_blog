@@ -1,7 +1,7 @@
 from flask import (render_template,
                    url_for,
                    flash,
-                   request,
+                   request,                   
                    redirect)
 
 from werkzeug.urls import url_parse
@@ -82,7 +82,9 @@ def logout():
     logout_user()
     return redirect(url_for('about'))
 
-@app.route('/account')
+
+@app.route('/account/<username>')
 @login_required
-def account():
-    return render_template('account.html', title='Account')
+def account(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('account.html', user=user, title='Account')
