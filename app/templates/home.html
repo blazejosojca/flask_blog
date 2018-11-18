@@ -2,7 +2,7 @@
 {% block content %}
 <h1>Hi,
     {% if current_user.is_anonymous %}
-    guest - you should not be here!
+    splease, login or register to write posts!
     {% else %}
     {{ current_user.username}}
     {% endif %}

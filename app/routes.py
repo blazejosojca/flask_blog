@@ -5,13 +5,14 @@ from flask import (render_template,
                    redirect)
 
 from werkzeug.urls import url_parse
+from datetime import datetime
 from flask_login import (current_user,
                          login_user,
                          logout_user,
                          login_required)
 
 from app import app, db
-from app.forms import RegistrationForm, LoginForm
+from app.forms import RegistrationForm, LoginForm, UserUpdateForm
 from app.models import User
 
 
@@ -29,6 +30,12 @@ posts = [
         'date_posted': '02.02.2018',
     }
 ]
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
 
 
 @app.route("/")
@@ -58,10 +65,20 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route("/user/update/<username>", methods=['GET', 'POST'])
+@app.route("/user_update", methods=['GET', 'POST'])
 @login_required
 def user_update():
-    pass
+    form = UserUpdateForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash("Your changes has been saved!")
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    return render_template('user_update.html', title='Update', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -87,9 +104,9 @@ def logout():
     return redirect(url_for('about'))
 
 
-@app.route('/user/<username>')
+@app.route('/account/<username>')
 @login_required
-def user(username):
+def account(username):
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user, image_file=image_file)
+    return render_template('account.html', user=user, image_file=image_file, title='Account')

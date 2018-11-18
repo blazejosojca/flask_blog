@@ -1,13 +1,17 @@
 {% extends "base.html"%}
 
 {% block content %}
-    <h1>User: {{ user.username }}</h1>
+    <h1>Account: {{ user.username }}</h1>
     <div class="content-section">
         <div class="media">
             <img class="rounded-circle account-img" src="{{ image_file }}">
                 <div class="media-body">
                     <h2 class="account-heading">User: {{ current_user.username }}</h2>
                     <p class="text-secondary">Email: {{ current_user.email }}</p>
+                    <td>
+                        {% if user.about_me %}<p>{{user.about_me}}</p>{% endif %}
+                        {% if user.last_seen %}<p>{{user.last_seen}}</p>{% endif %}
+                    </td>
                 </div>
                 <div class="media-body">
                     <div>
@@ -17,7 +21,7 @@
                     </div>
                 </div>
                 <div>
-                    <button class="btn btn-small">Edit</button>
+                    <a class="btn btn-small" href="{{ url_for('user_update') }}">Edit</a>
                 </div>
 
         </div>

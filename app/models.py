@@ -18,6 +18,8 @@ class User(UserMixin, db.Model):
                            default='default.jpg')
     password_hashed = db.Column(db.String(128), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
+    about_me = db.Column(db.String(128))
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow())
 
     def __repr__(self):
         return f'<User - {self.username}, {self.email}, {self.image_file} >'
