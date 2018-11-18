@@ -32,3 +32,22 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
+
+class UserUpdateForm(FlaskForm):
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(min=2, max=24)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Confirm')
+
+    
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user is not None:
+            raise ValidationError(
+                    'This username already exists. Please use a different username!'
+                                )
+
+    def validat_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError('This email already exists. Please use a different email!')

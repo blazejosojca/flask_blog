@@ -33,7 +33,6 @@ posts = [
 
 @app.route("/")
 @app.route("/home")
-@login_required
 def home():
     return render_template('home.html', title='home', posts=posts)
 
@@ -58,6 +57,11 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+
+@app.route("/user/update/<username>", methods=['GET', 'POST'])
+@login_required
+def user_update():
+    pass
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
