@@ -1,6 +1,23 @@
-{% extend "base.html"%}
+{% extends "base.html"%}
 
 {% block content %}
+    <h1>User: {{ user.username }}</h1>
+    <div class="content-section">
+        <div class="media">
+            <img class="rounded-circle account-img" src="{{ image_file }}">
+                <div class="media-body">
+                    <h2 class="account-heading">User: {{ current_user.username }}</h2>
+                    <p class="text-secondary">Email: {{ current_user.email }}</p>
+                </div>
+                <div class="media-body">
+                    <div>
+                        {% for post in posts %}
+                        {{ post.author.username}}
+                        {% endfor %}
+                    </div>
+                </div>
 
+        </div>
+    </div>
 
-{% endblock%}
+{% endblock content%}
