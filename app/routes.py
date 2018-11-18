@@ -83,8 +83,9 @@ def logout():
     return redirect(url_for('about'))
 
 
-@app.route('/account/<username>')
+@app.route('/user/<username>')
 @login_required
-def account(username):
+def user(username):
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('account.html', user=user, title='Account')
+    return render_template('user.html', user=user, image_file=image_file)
