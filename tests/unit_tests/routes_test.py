@@ -27,6 +27,7 @@ class TestRoutes(BaseTestCase):
     def test_home_page(self):
         response = self.app.get('/home', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed('home.html')
 
     def test_about_page(self):
         response = self.app.get('/about', follow_redirects=True)
