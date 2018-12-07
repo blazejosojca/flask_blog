@@ -6,13 +6,14 @@ from app.models import User
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired(), Length(min=2, max=24)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    username = StringField('Username',validators=[DataRequired(), Length(min=2, max=24)]
+                           )
+    email = StringField('Email', validators=[DataRequired(),
+                                             Email()]
+                        )
     password = PasswordField('Password', validators=[DataRequired()])
     password_confirmation = PasswordField('Confirm Password',
-                                            validators=[DataRequired(),
-                                                        EqualTo('password')])
+                                          validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
@@ -22,7 +23,7 @@ class RegistrationForm(FlaskForm):
                     'This username already exists. Please use a different username!'
                                 )
 
-    def validat_email(self, email):
+    def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('This email already exists. Please use a different email!')
@@ -34,13 +35,13 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
-class UserUpdateForm(FlaskForm):
+
+class UpdateUserForm(FlaskForm):
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=24)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Confirm')
 
-    
     def validate_username(self, username):
         if username.data is not current_user.username:
             user = User.query.filter_by(username=username.data).first()
