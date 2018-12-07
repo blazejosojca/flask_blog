@@ -49,7 +49,7 @@ class UserUpdateForm(FlaskForm):
                     'This username already exists. Please use a different username!'
                                 )
 
-    def validat_email(self, email):
+    def validate_email(self, email):
         if email.data is not current_user.email:
             user = User.query.filter_by(email=email.data).first()
             if user is not None:
