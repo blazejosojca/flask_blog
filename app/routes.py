@@ -12,7 +12,9 @@ from flask_login import (current_user,
                          login_required)
 
 from app import app, db
-from app.forms import RegistrationForm, LoginForm, UserUpdateForm
+from app.forms import (RegistrationForm,
+                       LoginForm,
+                       UpdateUserForm)
 from app.models import User
 
 
@@ -30,6 +32,7 @@ posts = [
         'date_posted': '02.02.2018',
     }
 ]
+
 
 @app.before_request
 def before_request():
@@ -55,7 +58,8 @@ def register():
         return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+        user = User(username=form.username.data,
+                    email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -68,7 +72,7 @@ def register():
 @app.route("/user_update", methods=['GET', 'POST'])
 @login_required
 def user_update():
-    form = UserUpdateForm()
+    form = UpdateUserForm()
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.email = form.email.data
@@ -79,6 +83,7 @@ def user_update():
         form.username.data = current_user.username
         form.email.data = current_user.email
     return render_template('user_update.html', title='Update', form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -104,7 +109,7 @@ def logout():
     return redirect(url_for('about'))
 
 
-@app.route('/account/<username>')
+@app.route('/account/<username>', methods=['GET', 'POST'])
 @login_required
 def account(username):
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
