@@ -3,8 +3,7 @@
 {% block content %}
     <table>
         <tr valign="top">
-            <td><img src="{{ user.image_file(128) }}"></td>
-            <td><h1>User: {{ user.username }} </h1></td>
+            <td><img src="{{ user.image_file }}"></td>
         </tr>
     </table>
     <h1>User: {{ user.username }}</h1>
