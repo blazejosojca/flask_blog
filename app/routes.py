@@ -18,7 +18,7 @@ from app.forms import (RegistrationForm,
 from app.models import User
 
 
-posts = [
+POSTS = [
     {
         'author': 'Name Surname',
         'title': 'Post title',
@@ -44,7 +44,7 @@ def before_request():
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html', title='home', posts=posts)
+    return render_template('home.html', title='home', posts=POSTS)
 
 
 @app.route("/about")
@@ -83,6 +83,17 @@ def user_update():
         form.username.data = current_user.username
         form.email.data = current_user.email
     return render_template('user_update.html', title='Update', form=form)
+
+
+# TODO - finish this part - add links and template
+@app.route('/user/<username>', methods=['GET'])
+def user_details(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = [
+        {'author': user, 'body': 'Test post #1'},
+        {'author': user, 'body': 'Test post #2'}
+    ]
+    return render_template('user_details.html', user=user, posts=posts, title='User details')
 
 
 @app.route('/login', methods=['GET', 'POST'])
