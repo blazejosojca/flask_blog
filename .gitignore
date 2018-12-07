@@ -101,7 +101,7 @@ flask_venv/
 .idea/
 
 # .db and migrations
-app.db
+*.db
 migrations/README
 migrations/alembic.ini
 migrations/env.py
