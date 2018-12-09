@@ -3,6 +3,7 @@ from datetime import datetime
 from werkzeug.security import (generate_password_hash,
                                check_password_hash)
 from flask_login import UserMixin
+from hashlib import md5
 
 
 @login.user_loader
@@ -23,6 +24,7 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f'<User - {self.username}, {self.email}, {self.image_file} >'
+
 
     def set_password(self, password):
         self.password_hashed = generate_password_hash(password)
