@@ -52,6 +52,7 @@ def about():
     return render_template('about.html', title='About')
 
 
+
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -68,6 +69,8 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+def save_image_file(image_file):
+    pass
 
 @app.route("/user_update", methods=['GET', 'POST'])
 @login_required
@@ -76,24 +79,27 @@ def user_update():
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.email = form.email.data
+        current_user.about_me = form.about_me.data
         db.session.commit()
         flash("Your changes has been saved!")
-        return redirect(url_for('account'))
+        return redirect(url_for('user_update'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    return render_template('user_update.html', title='Update', form=form)
+        form.about_me.data = current_user.about_me
+    return render_template('user_update.html', title='User update', form=form)
 
 
 # TODO - finish this part - add links and template
 @app.route('/user/<username>', methods=['GET'])
-def user_details(username):
+def user_posts(username):
     user = User.query.filter_by(username=username).first_or_404()
     posts = [
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
     ]
-    return render_template('user_details.html', user=user, posts=posts, title='User details')
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('user_details.html', user=user, posts=posts, title='User details', image_file=image_file)
 
 
 @app.route('/login', methods=['GET', 'POST'])
