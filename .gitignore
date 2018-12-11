@@ -116,3 +116,8 @@ pycparser-2.19.tar.gz
 
 # settings
 .settings
+
+# image files
+.jpg
+.jpeg
+.bmp
