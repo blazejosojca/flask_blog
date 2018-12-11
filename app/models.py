@@ -1,9 +1,11 @@
-from app import db, login
+import os
+import secrets
+from PIL import Image
+from app import app, db, login
 from datetime import datetime
 from werkzeug.security import (generate_password_hash,
                                check_password_hash)
 from flask_login import UserMixin
-from hashlib import md5
 
 
 @login.user_loader
@@ -25,12 +27,20 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f'<User - {self.username}, {self.email}, {self.image_file} >'
 
-
     def set_password(self, password):
         self.password_hashed = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hashed, password)
+
+    @staticmethod
+    def save_image_file(image_file):
+        random_hex = secrets.token_hex(8)
+        image_name, image_ext = os.path.split(image_file.filename)
+        image_filename = random_hex + image_ext
+        image_path = os.path.join(app.root_path, 'static/profile_pics', image_filename)
+        image_file.save(image_path)
+        return image_filename
 
 
 class Post(db.Model):

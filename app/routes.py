@@ -55,7 +55,6 @@ def about():
     return render_template('about.html', title='About')
 
 
-
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -72,14 +71,6 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-def save_image_file(image_file):
-    random_hex = secrets.token_hex(8)
-    image_name, image_ext = os.path.split(image_file.filename)
-    image_filename = random_hex + image_ext
-    image_path = os.path.join(app.root_path, 'static/profile_pics',image_filename)
-    image_file.save(image_path)
-
-    return image_filename
 
 @app.route("/user_update", methods=['GET', 'POST'])
 @login_required
@@ -87,7 +78,7 @@ def user_update():
     form = UpdateUserForm()
     if form.validate_on_submit():
         if form.image_file.data:
-            image_file = save_image_file(form.image_file.data)
+            image_file = User.save_image_file(form.image_file.data)
             current_user.image_file = image_file
         current_user.username = form.username.data
         current_user.email = form.email.data
