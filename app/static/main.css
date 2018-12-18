@@ -1,5 +1,5 @@
 body {
-  background: #E9E9E9;
+  background: #d9e6f2;
   color: #333333;
   margin-top: 5rem;
 }
@@ -9,7 +9,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-steel {
-  background-color: #8A9B59;
+  background-color: #2d5986;
 }
 
 .site-header .navbar-nav .nav-link .navbar-brand{
@@ -21,7 +21,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .site-header .navbar-nav .nav-link.active {
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .content-section {
@@ -81,4 +81,26 @@ a.article-title:hover {
 
 .navbar-brand {
 color: #ffffff;
+}
+
+.jumbotron {
+padding: 1rem;
+padding-top: 1rem;
+padding-right: 1rem;
+padding-bottom: 1rem;
+padding-left: 2rem;
+margin-bottom: 2 rem;
+background-color: white;
+border-radius: 0.2rem;
+border-top-left-radius: 0.3rem;
+border-top-right-radius: 0.3rem;
+border-bottom-right-radius: 0.3rem;
+border-bottom-left-radius: 0.3rem;
+text-align:center;
+}
+
+.display-3 {
+color: #2d5986;
+font-size: 3.5rem;
+font-weight: 300;
 }
