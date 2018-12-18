@@ -59,3 +59,13 @@ class UpdateUserForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user is not None:
                 raise ValidationError('This email already exists. Please use a different email!')
+
+
+class CreatePostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired(), Length(min=2)])
+    submit = SubmitField('Create')
+
+
+
+

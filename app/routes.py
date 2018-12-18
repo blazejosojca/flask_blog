@@ -1,6 +1,5 @@
 import os
 import secrets
-from hashlib import md5
 from flask import (render_template,
                    url_for,
                    flash,
@@ -17,8 +16,9 @@ from flask_login import (current_user,
 from app import app, db
 from app.forms import (RegistrationForm,
                        LoginForm,
-                       UpdateUserForm)
-from app.models import User
+                       UpdateUserForm,
+                       CreatePostForm)
+from app.models import User, Post
 
 
 POSTS = [
@@ -72,13 +72,22 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
+def save_image_file(image_file):
+    random_hex = secrets.token_hex(8)
+    image_name, image_ext = os.path.split(image_file.filename)
+    image_filename = f'{random_hex}{image_ext}'
+    image_path = os.path.join(app.root_path, 'static/profile_pics', image_filename)
+    image_file.save(image_path)
+    return image_filename
+
+
 @app.route("/user_update", methods=['GET', 'POST'])
 @login_required
 def user_update():
     form = UpdateUserForm()
     if form.validate_on_submit():
         if form.image_file.data:
-            image_file = User.save_image_file(form.image_file.data)
+            image_file = save_image_file(form.image_file.data)
             current_user.image_file = image_file
         current_user.username = form.username.data
         current_user.email = form.email.data
@@ -93,7 +102,6 @@ def user_update():
     return render_template('user_update.html', title='User update', form=form)
 
 
-# TODO - finish this part - add links and template
 @app.route('/user/<username>', methods=['GET'])
 def user_posts(username):
     user = User.query.filter_by(username=username).first_or_404()
@@ -135,3 +143,14 @@ def account(username):
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('account.html', user=user, image_file=image_file, title='Account')
+
+@app.route('/post/new', methods=['GET', 'POST'])
+@login_required
+def create_post():
+    form=CreatePostForm()
+    if form.validate_on_submit():
+        post = Post(title)
+        flash("Post was created", 'success')
+        return redirect(url_for('home'))
+    return render_template('create_post.html', title='New post',form=form)
+
