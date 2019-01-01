@@ -3,7 +3,6 @@ from datetime import datetime
 from werkzeug.security import (generate_password_hash,
                                check_password_hash)
 from flask_login import UserMixin
-from flask_images import Images
 
 
 @login.user_loader

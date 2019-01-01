@@ -144,3 +144,8 @@ def create_post():
         flash("Post was created", 'success')
         return redirect(url_for('home'))
     return render_template('create_post.html', title='New post',form=form)
+
+@app.route('/post/<int:post_id>')
+def post_view(post_id):
+    post= Post.query.get_or_404(post_id)
+    return render_template('post_details.html', title=post.title, post=post)
