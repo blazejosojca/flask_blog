@@ -123,3 +123,8 @@ pycparser-2.19.tar.gz
 .jpeg
 .bmp
 app/static/profile_pics/*
+
+# logs
+/logs/
+
+
