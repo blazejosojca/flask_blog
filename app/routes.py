@@ -33,8 +33,9 @@ def before_request():
 @app.route("/")
 @app.route("/home")
 def home():
-    posts = Post.query.all()
-    return render_template('home.html', title='home', posts=posts)
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.paginate(page=page, per_page=5)
+    return render_template('home.html', title='Home', posts=posts)
 
 
 @app.route("/about")
@@ -94,8 +95,8 @@ def account(username):
 @app.route("/user_update", methods=['GET', 'POST'])
 @login_required
 def user_update():
-    form = UpdateUserForm()
-    if form.validate_on_submit():
+    form = UpdateUserForm(current_user.username, current_user.email)
+    if form.validate_on_submit() is True:
         if form.image_file.data:
             image_file = save_image_file(form.image_file.data)
             current_user.image_file = image_file
@@ -103,7 +104,7 @@ def user_update():
         current_user.email = form.email.data
         current_user.about_me = form.about_me.data
         db.session.commit()
-        flash("Your change has been saved!")
+        flash("Your change has been saved!", 'info')
         return redirect(url_for('user_update'))
     elif request.method == 'GET':
         form.username.data = current_user.username

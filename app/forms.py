@@ -46,19 +46,22 @@ class UpdateUserForm(FlaskForm):
                            validators=[FileAllowed(['jpg', 'jpeg', 'png'])])
     submit = SubmitField('Submit')
 
+    def __init__(self, original_username, original_email, *args, **kwargs):
+        super(UpdateUserForm, self).__init__(*args, **kwargs)
+        self.original_username = original_username
+        self.original_email = original_email
+
     def validate_username(self, username):
-        if username.data is not current_user.username:
-            user = User.query.filter_by(username=username.data).first()
+        if username.data is not self.original_username:
+            user = User.query.filter_by(username=self.username.data).first()
             if user is not None:
-                raise ValidationError(
-                    'This username already exists. Please use a different username!'
-                                )
+                raise ValidationError('Please use a different username!')
 
     def validate_email(self, email):
-        if email.data is not current_user.email:
-            user = User.query.filter_by(email=email.data).first()
+        if email.data is not self.original_email:
+            user = User.query.filter_by(email=self.email.data).first()
             if user is not None:
-                raise ValidationError('This email already exists. Please use a different email!')
+                raise ValidationError('Please use a different email!')
 
 
 class CreatePostForm(FlaskForm):

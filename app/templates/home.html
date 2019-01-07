@@ -7,7 +7,7 @@
     {{ current_user.username}}
     {% endif %}
 </h1>
-    {% for post in posts %}
+    {% for post in posts.items %}
         {% include '_post.html' %}
     {% endfor %}
 {% endblock content %}
