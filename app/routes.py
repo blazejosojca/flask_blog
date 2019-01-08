@@ -34,7 +34,8 @@ def before_request():
 @app.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.paginate(page=page, per_page=5)
+    query = Post.query.order_by(Post.date_posted.desc())
+    posts = query.paginate(page=page, per_page=5)
     return render_template('home.html', title='Home', posts=posts)
 
 
@@ -130,8 +131,12 @@ def user_delete():
 
 @app.route('/user/<username>', methods=['GET'])
 def user_posts(username):
+    page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(user_id=user.id)
+    # order_by(Post.date_posted.desc())
+    posts = Post.query.filter_by(user_id = user.id)\
+        .order_by(Post.date_posted.desc())\
+        .paginate(page=page, per_page=5)
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('user_details.html', user=user, posts=posts, title='User details', image_file=image_file)
 
@@ -141,7 +146,7 @@ def user_posts(username):
 def create_post():
     form = CreatePostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        post = Post(title=form.title.data, content=form.content.data, user=current_user)
         db.session.add(post)
         db.session.commit()
         flash("Post was created", 'success')
