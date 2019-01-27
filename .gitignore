@@ -127,4 +127,6 @@ app/static/profile_pics/*
 # logs
 /logs/
 
+#config_files
+mail_config.py
 

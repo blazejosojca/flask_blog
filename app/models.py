@@ -1,8 +1,12 @@
+import jwt
 from app import db, login
+from time import time
+from app import app
+from flask_login import UserMixin
 from datetime import datetime
 from werkzeug.security import (generate_password_hash,
                                check_password_hash)
-from flask_login import UserMixin
+from config import Config
 
 
 @login.user_loader
@@ -21,14 +25,28 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.String(128))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __repr__(self):
-        return f'<User - {self.username}, {self.email}, {self.image_file} >'
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password':self.id, 'exp':time() + expires_in},
+            app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            user_id = jwt.decode(token, app.config['SECRET_KEY'],
+                                 algorithms=['HS256'])['reset_password']
+        except:
+            return None
+        return User.query.get(user_id)
 
     def set_password(self, password):
         self.password_hashed = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hashed, password)
+
+    def __repr__(self):
+        return f'<User - {self.username}, {self.email},{self.image_file} >'
 
 
 class Post(db.Model):

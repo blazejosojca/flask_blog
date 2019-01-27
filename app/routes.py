@@ -19,8 +19,11 @@ from app.forms import (RegistrationForm,
                        LoginForm,
                        UpdateUserForm,
                        CreatePostForm,
-                       UpdatePostForm)
+                       UpdatePostForm,
+                       RequestResetForm,
+                       ResetPasswordForm)
 from app.models import User, Post
+from app.email import send_mail, send_password_reset_email
 
 
 @app.before_request
@@ -189,4 +192,36 @@ def post_delete(post_id):
     db.session.commit()
     flash('Post has been deleted')
     return redirect(url_for('home'))
+
+
+@app.route("/reset_password", methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            send_password_reset_email(user)
+        flash('The email has been sent to reset your password!', 'info')
+        return redirect(url_for('login'))
+    return render_template('reset_password_request.html', title='Reset Password', form=form)
+
+@app.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user = User.verify_reset_token(token)
+    if not user:
+        return redirect(url_for('home'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Your password has been reset!')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', title= 'Reset Password', form=form)
+
+
+
 
