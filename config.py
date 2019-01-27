@@ -1,4 +1,5 @@
 import os
+from mail_config import MailSettings
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -12,14 +13,12 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     #mail configuration for sending logs
-    MAIL_SERVER = os.environ.get('MAIL_SERVER')
-    MAIL_PORT = str(os.environ.get('MAIL_PORT') or 25)
-    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    ADMINS = ['test@mail.com']
-
-    #TODO - finish configuration for email logging notifications
+    MAIL_SERVER = MailSettings.MAIL_SERVER
+    MAIL_PORT = MailSettings.MAIL_PORT
+    MAIL_USE_TLS = MailSettings.MAIL_USE_TLS
+    MAIL_USERNAME = MailSettings.MAIL_USERNAME
+    MAIL_PASSWORD = MailSettings.MAIL_PASSWORD
+    ADMINS = MailSettings.ADMINS
 
 
 class DevelopmentConfig(Config):
