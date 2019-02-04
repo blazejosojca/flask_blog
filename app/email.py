@@ -1,22 +1,31 @@
 from flask import render_template
 from app import app
 from flask_mail import Message
-from app import mail
+import smtplib
+import ssl
 
 
-def send_mail(subject, sender, recipients, test_body, html_body):
+def send_mail(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
-    msg.body = test_body
+    msg.body = text_body
     msg.html = html_body
-    mail.send(msg)
+    port = app.config['MAIL_PORT']
+    password = app.config['MAIL_PASSWORD']
+    smtp_server = app.config['MAIL_SERVER']
+    context = ssl.create_default_context()
+    with smtplib.SMTP(smtp_server, port) as server:
+        server.ehlo()
+        server.starttls(context=context)
+        server.login(sender, password)
+        server.sendmail(sender, recipients, msg.body)
 
 
 def send_password_reset_email(user):
     token = user.get_reset_password_token()
     send_mail('Blog Reset Your Password',
-              sender=app.config['ADMINS'][1],
+              sender=app.config['ADMINS'][0],
               recipients=[user.email],
-              test_body=render_template('email/reset_password.txt',
+              text_body=render_template('email/reset_password.txt',
                                         user=user, token=token),
               html_body=render_template('email/reset_password.html',
                                         user=user, token=token))

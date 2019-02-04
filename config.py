@@ -12,7 +12,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    #mail configuration for sending logs
+    #mail configuration for sending logs and emails to reset password
     MAIL_SERVER = MailSettings.MAIL_SERVER
     MAIL_PORT = MailSettings.MAIL_PORT
     MAIL_USE_TLS = MailSettings.MAIL_USE_TLS

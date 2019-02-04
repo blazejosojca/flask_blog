@@ -13,6 +13,7 @@ from flask_login import (current_user,
                          login_user,
                          logout_user,
                          login_required)
+from flask_mail import Message
 
 from app import app, db
 from app.forms import (RegistrationForm,
@@ -211,7 +212,7 @@ def reset_password_request():
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('home'))
-    user = User.verify_reset_token(token)
+    user = User.verify_reset_password_token(token)
     if not user:
         return redirect(url_for('home'))
     form = ResetPasswordForm()

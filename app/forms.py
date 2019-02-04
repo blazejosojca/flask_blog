@@ -16,14 +16,16 @@ class RegistrationForm(FlaskForm):
                                           validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
 
-    def validate_username(self, username):
+    @staticmethod
+    def validate_username(username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError(
                     'This username already exists. Please use a different username!'
                                 )
 
-    def validate_email(self, email):
+    @staticmethod
+    def validate_email(email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('This email already exists. Please use a different email!')
@@ -76,16 +78,16 @@ class UpdatePostForm(CreatePostForm):
 class RequestResetForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
-    
-    def validate_email(self, email):
+
+    @staticmethod
+    def validate_email(email):
         user = User.query.filter_by(email=email.data).first()
-        if user:
+        if user is None:
             raise ValidationError('There is no account with this email.')
-        
+
+
 class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password_confirmation = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
-    
-    
-    
+
