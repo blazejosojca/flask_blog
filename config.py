@@ -35,8 +35,8 @@ class StagingConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
 
-
-class TestConfig(Config):
-    DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test.db')
-    TESTING = True
+#
+# class TestConfig(Config):
+#     DEBUG = False
+#     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test.db')
+#     TESTING = True
