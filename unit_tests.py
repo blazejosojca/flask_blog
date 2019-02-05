@@ -6,26 +6,30 @@ from app import app, db
 from config import basedir
 
 class BaseTestCase(TestCase):
-
+    # Base methods for starting tests
     def create_app(self):
-        app.config.from_object('config.TestConfig')
         return app
 
     def setUp(self):
         self.app = app.test_client()
-
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
         db.create_all()
 
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
 
+    # Test for ensure that flask is set up
     def test_server_is_up(self):
         tester = app.test_client(self)
-        response = tester.get("/")
+        response = tester.get("/", content_type='html/text')
         self.assertEqual(response.status_code, 200)
 
     def test_database(self):
         tester = os.path.exists(os.path.join(basedir, 'test.db'))
         self.assertTrue(tester)
 
+    # Base test methods for further using
     def register(self, username, email, password, password_confirmation):
         return self.app.post(
             '/register',
@@ -44,6 +48,7 @@ class BaseTestCase(TestCase):
     def logout(self):
         return self.app.get('/logout', follow_redirects=True)
 
+    # Real tests
     def test_valid_user_login(self):
         response = self.login('test@mail.com', 'password')
         self.assertEqual(response.status_code, 200)
@@ -77,11 +82,6 @@ class BaseTestCase(TestCase):
     def test_logout_page(self):
             response = self.app.get('/logout', follow_redirects=True)
             self.assertEqual(response.status_code, 200)
-
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
 
 
 if __name__ == '__main__':
