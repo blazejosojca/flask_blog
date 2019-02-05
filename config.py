@@ -13,12 +13,12 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     #mail configuration for sending logs and emails to reset password
-    MAIL_SERVER = MailSettings.MAIL_SERVER
-    MAIL_PORT = MailSettings.MAIL_PORT
-    MAIL_USE_TLS = MailSettings.MAIL_USE_TLS
-    MAIL_USERNAME = MailSettings.MAIL_USERNAME
-    MAIL_PASSWORD = MailSettings.MAIL_PASSWORD
-    ADMINS = MailSettings.ADMINS
+    MAIL_SERVER = MailSettings.server
+    MAIL_PORT = MailSettings.port
+    MAIL_USE_TLS = MailSettings.use_tls
+    MAIL_USERNAME = MailSettings.username
+    MAIL_PASSWORD = MailSettings.password
+    ADMINS = ['testblazej2018@gmail.com']
 
 
 class DevelopmentConfig(Config):
