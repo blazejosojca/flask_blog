@@ -1,5 +1,6 @@
 import os
 import secrets
+
 from flask import (render_template,
                    url_for,
                    flash,
@@ -13,7 +14,6 @@ from flask_login import (current_user,
                          login_user,
                          logout_user,
                          login_required)
-from flask_mail import Message
 
 from app import app, db
 from app.forms import (RegistrationForm,
@@ -24,7 +24,7 @@ from app.forms import (RegistrationForm,
                        RequestResetForm,
                        ResetPasswordForm)
 from app.models import User, Post
-from app.email import send_mail, send_password_reset_email
+from app.email import send_password_reset_email
 
 
 @app.before_request
@@ -60,7 +60,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        flash(f"A new user added. Congratulations!", 'success')
+        flash("A new user added. Congratulations!", 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -70,19 +70,18 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = LoginForm()
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            user = User.query.filter_by(email=form.email.data).first()
-            if user is not None and user.check_password(form.password.data):
-                login_user(user, remember=form.remember.data)
-                flash('You were logged in!', 'info')
-                next_page = request.args.get('next')
-                if not next_page or url_parse(next_page).netloc != '':
-                    next_page = url_for('home')
-                return redirect(next_page)
-            else:
-                flash('Credentials are incorrect!', 'warning')
-                return redirect(url_for('login'))
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None and user.check_password(form.password.data):
+            login_user(user, remember=form.remember.data)
+            flash('You were logged in!', 'info')
+            next_page = request.args.get('next')
+            if not next_page or url_parse(next_page).netloc != '':
+                next_page = url_for('home')
+            return redirect(next_page)
+        else:
+            flash('Credentials are incorrect!', 'warning')
+            return redirect(url_for('login'))
     return render_template('login.html', title='Login', form=form)
 
 
@@ -124,7 +123,7 @@ def user_update():
 def save_image_file(image_file):
     random_hex = secrets.token_hex(8)
     image_name, image_ext = os.path.split(image_file.filename)
-    image_filename = f'{random_hex}{image_ext}'
+    image_filename = '{0}{1}'.format(random_hex, image_ext)
     image_path = os.path.join(app.root_path, 'static/profile_pics', image_filename)
     image_file.save(image_path)
     return image_filename
@@ -141,7 +140,7 @@ def user_posts(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
     # order_by(Post.date_posted.desc())
-    posts = Post.query.filter_by(user_id = user.id)\
+    posts = Post.query.filter_by(user_id=user.id)\
         .order_by(Post.date_posted.desc())\
         .paginate(page=page, per_page=5)
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
@@ -211,6 +210,7 @@ def reset_password_request():
         return redirect(url_for('login'))
     return render_template('reset_password_request.html', title='Reset Password', form=form)
 
+
 @app.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_password(token):
     if current_user.is_authenticated:
@@ -224,8 +224,6 @@ def reset_password(token):
         db.session.commit()
         flash('Your password has been reset!')
         return redirect(url_for('login'))
-    return render_template('reset_password.html', title= 'Reset Password', form=form)
-
-
-
-
+    return render_template('reset_password.html',
+                           title='Reset Password',
+                           form=form)

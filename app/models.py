@@ -6,7 +6,6 @@ from flask_login import UserMixin
 from datetime import datetime
 from werkzeug.security import (generate_password_hash,
                                check_password_hash)
-from config import Config
 
 
 @login.user_loader
@@ -21,13 +20,13 @@ class User(UserMixin, db.Model):
     image_file = db.Column(db.String(48), nullable=False,
                            default='default.jpg')
     password_hashed = db.Column(db.String(128), nullable=False)
-    posts = db.relationship('Post', backref='author', lazy=True)
+    posts = db.relationship('Post', backref=' author', lazy=True)
     about_me = db.Column(db.String(128))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow())
 
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
-            {'reset_password':self.id, 'exp':time() + expires_in},
+            {'reset_password': self.id, 'exp': time() + expires_in},
             app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
     @staticmethod
@@ -46,7 +45,7 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hashed, password)
 
     def __repr__(self):
-        return f'<User - {self.username}, {self.email},{self.image_file} >'
+        return '<User - {0}, {1},{2} >'.format(self.username, self.email, self.image_file)
 
 
 class Post(db.Model):
@@ -58,4 +57,4 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f'<Post - {self.title}, {self.date_posted}>'
+        return '<Post - {0}, {1}>'.format(self.title, self.date_posted)
