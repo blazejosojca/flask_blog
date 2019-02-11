@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 driver = webdriver.Firefox()
 
 
-url = "http://127.0.0.1:5000/home"
+url = "http://127.0.0.1:5000/bp"
 css_login = "div.navbar-nav:nth-child(2) > a:nth-child(1)"
 css_email_login_input = "#email"
 css_password_input = "#password"

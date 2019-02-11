@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
-from flask_wtf.file import FileField, FileAllowed
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from flask_wtf.file import FileAllowed, FileField
+from wtforms import StringField, TextAreaField, SubmitField, PasswordField, BooleanField
+from wtforms.validators import DataRequired, Email, ValidationError, Length, EqualTo
+
 from app.models import User
 
 
@@ -15,7 +16,6 @@ class RegistrationForm(FlaskForm):
     password_confirmation = PasswordField('Confirm Password',
                                           validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
-
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
@@ -62,16 +62,6 @@ class UpdateUserForm(FlaskForm):
             user = User.query.filter_by(email=self.email.data).first()
             if user is not None:
                 raise ValidationError('Please use a different email!')
-
-
-class CreatePostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired(), Length(min=2)])
-    submit = SubmitField('Create Post')
-
-
-class UpdatePostForm(CreatePostForm):
-    submit = SubmitField('Update Post')
 
 
 class RequestResetForm(FlaskForm):

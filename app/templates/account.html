@@ -9,7 +9,7 @@
             <img class="rounded-circle account-img" src="{{ image_file }}">
                 <div class="media-body">
                     <h2 class="account-heading">{{ current_user.username }}</h2>
-                    <a class="btn btn-secondary btn-small" href="{{ url_for('user_update') }}">Edit</a>
+                    <a class="btn btn-secondary btn-small" href="{{ url_for('auth.user_update') }}">Edit</a>
                     <p class="text-secondary">Email: {{ current_user.email }}</p>
                 </div>
         </div>
@@ -22,7 +22,7 @@
                 <p>Last seen: {{user.last_seen.strftime('%Y/%m/%d %H:%M:%S')}}</p>
                 {% endif %}
             </td>
-            <a class="btn btn-outline-info" href="{{ url_for('user_posts', username=current_user.username) }}">See posts</a>
+            <a class="btn btn-outline-info" href="{{ url_for('auth.user_posts', username=current_user.username) }}">See posts</a>
         </div>
         </div>
 

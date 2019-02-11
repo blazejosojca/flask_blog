@@ -20,7 +20,7 @@ class User(UserMixin, db.Model):
     image_file = db.Column(db.String(48), nullable=False,
                            default='default.jpg')
     password_hashed = db.Column(db.String(128), nullable=False)
-    posts = db.relationship('Post', backref=' author', lazy=True)
+    posts = db.relationship('Post', backref='author', lazy=True)
     about_me = db.Column(db.String(128))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow())
 

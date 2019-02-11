@@ -8,6 +8,11 @@ from app import app, db
 from config import basedir
 from app.models import User, Post
 
+from app.auth import routes
+from app.main import routes
+from app.posts import routes
+from app.errors import routes
+
 TEST_USER_NAME = 'test_user'
 TEST_USER_EMAIL = 'test@mail.com'
 TEST_PASSWORD = 'password'
@@ -109,9 +114,9 @@ class TestRoutes(BaseTest):
 
     # Tests of loading crucial pages
     def test_home_page_loads(self):
-        response = self.app.get('/home', follow_redirects=True)
+        response = self.app.get('/bp', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed('home.html')
+        self.assertTemplateUsed('bp.html')
 
     def test_login_page_loads(self):
         tester = app.test_client(self)
