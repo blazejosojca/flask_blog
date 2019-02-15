@@ -1,7 +1,9 @@
 import os
+from dotenv import load_dotenv
 from mail_config import MailSettings
-basedir = os.path.abspath(os.path.dirname(__file__))
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
 class Config(object):
     ENV = 'development'
@@ -34,8 +36,3 @@ class ProductionConfig(Config):
 class StagingConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
-
-
-class TestConfig(Config):
-    DEBUG = False
-    TESTING = True

@@ -7,7 +7,7 @@ from app import db
 from app.main import bp
 from app.models import Post
 
-from app import app, main
+from app import main
 
 
 @bp.before_request
@@ -18,7 +18,7 @@ def before_request():
 
 
 @bp.route("/")
-@bp.route("/bp")
+@bp.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
     query = Post.query.order_by(Post.date_posted.desc())
