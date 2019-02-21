@@ -36,7 +36,7 @@
         </div>
         <div class="form-group">
             {{ form.submit(class='btn btn-outline-info') }}
-            <a class="btn btn-outline-warning" href="{{ url_for('account', username=current_user.username) }}">Cancel</a>
+            <a class="btn btn-outline-warning" href="{{ url_for('auth.account', username=current_user.username) }}">Cancel</a>
         </div>
 
     </form>

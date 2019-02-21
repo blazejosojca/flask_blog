@@ -39,10 +39,13 @@ def login():
         if user is not None and user.check_password(form.password.data):
             login_user(user, remember=form.remember.data)
             flash('You were logged in!', 'info')
-            next_page = request.args.get('next')
-            if not next_page or url_parse(next_page).netloc != '':
-                next_page = url_for('main.home')
-            return redirect(next_page)
+            if user.is_admin:
+                return redirect(url_for('admin.admin_dashboard'))
+            else:
+                next_page = request.args.get('next')
+                if not next_page or url_parse(next_page).netloc != '':
+                    next_page = url_for('main.home')
+                return redirect(next_page)
         else:
             flash('Credentials are incorrect!', 'warning')
             return redirect(url_for('auth.login'))
@@ -60,7 +63,7 @@ def logout():
 def account(username):
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('account.html', user=user, image_file=image_file, title='Account')
+    return render_template('auth/account.html', user=user, image_file=image_file, title='Account')
 
 
 @bp.route("/user_update", methods=['GET', 'POST'])
@@ -76,19 +79,18 @@ def user_update():
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash("Your change has been saved!", 'info')
-        return redirect(url_for('user_update'))
+        return redirect(url_for('auth.user_update'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.about_me.data = current_user.about_me
-    return render_template('user_update.html', title='User update', form=form)
+    return render_template('auth/user_update.html', title='User update', form=form)
 
 
-@bp.route('/user/delete/<username>', methods=['GET', 'POST'])
+@bp.route('/user/delete', methods=['GET', 'POST'])
 @login_required
 def user_delete():
-    pass
-
+    return render_template('auth/user_delete.html')
 
 @bp.route('/user/<username>', methods=['GET'])
 def user_posts(username):
@@ -99,7 +101,7 @@ def user_posts(username):
         .order_by(Post.date_posted.desc())\
         .paginate(page=page, per_page=5)
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('user_details.html', user=user, posts=posts, title='User details', image_file=image_file)
+    return render_template('auth/user_details.html', user=user, posts=posts, title='User details', image_file=image_file)
 
 
 @bp.route("/reset_password", methods=['GET', 'POST'])
@@ -129,6 +131,6 @@ def reset_password(token):
         db.session.commit()
         flash('Your password has been reset!')
         return redirect(url_for('auth.login'))
-    return render_template('auth/reset_password.html',
+    return render_template('auth/reset_password',
                            title='Reset Password',
                            form=form)

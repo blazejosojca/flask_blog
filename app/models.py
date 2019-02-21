@@ -23,6 +23,7 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='author', lazy=True)
     about_me = db.Column(db.String(128))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow())
+    is_admin = db.Column(db.Boolean, default=False)
 
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
@@ -43,6 +44,7 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hashed, password)
+
 
     def __repr__(self):
         return '<User - {0}, {1},{2} >'.format(self.username, self.email, self.image_file)
