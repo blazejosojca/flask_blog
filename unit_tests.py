@@ -11,6 +11,9 @@ from app.models import User, Post
 TEST_USER_NAME = 'test_user'
 TEST_USER_EMAIL = 'test@mail.com'
 TEST_PASSWORD = 'password'
+TEST_ADMIN_NAME = 'test_admin'
+TEST_ADMIN_MAIL = 'admin@mail.com'
+TEST_ADMIN_PASSWORD = 'admin123'
 
 
 class TestConfig(Config):
@@ -37,6 +40,14 @@ class BaseTest(TestCase):
         post = Post(title='test title', content='test content', author=user)
         db.session.add(user)
         db.session.add(post)
+        db.session.commit()
+
+        admin = User(username = TEST_ADMIN_NAME,
+                    email = TEST_ADMIN_MAIL)
+        admin.set_password('admin123')
+        admin.is_admin=True
+
+        db.session.add(admin)
         db.session.commit()
 
     def tearDown(self):
@@ -76,14 +87,14 @@ class BaseTest(TestCase):
 class TestModels(BaseTest):
 
     def test_user_model(self):
-        self.assertEqual(User.query.count(), 1)
+        self.assertEqual(User.query.count(), 2)
 
     def test_adding_new_user(self):
         user1 = User(username="test1", email="test1@mail.com")
         user1.set_password('password')
         db.session.add(user1)
         db.session.commit()
-        self.assertEqual(User.query.count(), 2)
+        self.assertEqual(User.query.count(), 3)
 
     def test_post_model(self):
         user = User.query.filter_by(username='test_user').first()
@@ -138,10 +149,6 @@ class TestRoutes(BaseTest):
         self.assertEqual(response.status_code, 200)
 
 
-class TestDisplayingTemplates(BaseTest):
-    pass
-
-
 class TestLoginRoute(BaseTest):
 
     def test_login_with_correct_credentials(self):
@@ -152,6 +159,18 @@ class TestLoginRoute(BaseTest):
         response = self.login('', '')
         self.assertIn(b'Log In!', response.data)
 
+    def test_login_with_correct_admin_credentials(self):
+        response = self.login(TEST_ADMIN_MAIL, TEST_ADMIN_PASSWORD)
+        self.assertIn(b'You were logged in!', response.data)
+
+    def test_login_with_incorrect_credentials(self):
+        response = self.login(TEST_USER_EMAIL, '123')
+        self.assertIn(b'Credentials are incorrect!', response.data)
+
+    def test_login_with_incorrect_email_format(self):
+        response = self.login('mail-mail', TEST_PASSWORD)
+        self.assertIn(b'Invalid email address', response.data)
+
 
 class TestRegistrationRoute(BaseTest):
 
@@ -161,7 +180,11 @@ class TestRegistrationRoute(BaseTest):
 
     def test_registration_with_valid_data(self):
         response = self.register("new_test", 'new_test@mail.com', TEST_PASSWORD, TEST_PASSWORD)
-        self.assertIn(b'Login Page', response.data)
+        self.assertIn(b'Log In! ', response.data)
+
+    def test_registration_with_data_of_existing_admin(self):
+        response = self.register(TEST_ADMIN_NAME, TEST_ADMIN_MAIL, TEST_ADMIN_PASSWORD, TEST_ADMIN_PASSWORD)
+        self.assertIn(b'This username already exists. Please use a different username!', response.data)
 
 
 if __name__ == '__main__':
