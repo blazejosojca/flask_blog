@@ -8,17 +8,19 @@
                 <div class="intro-message">
                     <h1>Users list</h1>
                     <hr class="intro-divider">
-
                     {% for user in users %}
                         <div class="content-section">
-                            Username: {{ user.username }}
-                            Email: {{ user.email}}
-                            Status:
+                            <p>Username: {{ user.username }} </p>
+                            <p>Email: {{ user.email}}</p>
+                            <p>Status:
                             {% if user.is_admin %}
                                 Admin
                             {% else %}
                                 No admin
                             {% endif %}
+                            </p>
+                            <a class="btn btn-outline-info" href="{{ url_for('auth.user_delete') }}">Delete</a>
+                            <a class="btn btn-outline-info" href="{{ url_for('auth.reset_password_request') }}">Reset password</a>
                         </div>
                     {% endfor %}
                 </div>

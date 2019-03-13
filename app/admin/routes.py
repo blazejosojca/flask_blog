@@ -7,31 +7,22 @@ from app.admin import bp
 from app.models import User
 
 
-def check_admin(func):
-    @wraps(func)
-    def wrap():
-        if not current_user.is_admin:
+def check_admin():
+    if not current_user.is_admin:
             abort(403)
-    return wrap
 
-@bp.route('/dashboard')
-@check_admin
+@bp.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def admin_dashboard():
+    check_admin()
 
     return render_template('admin/dashboard.html', title='Dashboard')
 
 
 
 @bp.route('/users_list', methods=['GET', 'POST'])
-@check_admin
 @login_required
 def list_users():
+    check_admin()
     users = User.query.all()
-    user_status = str()
-    for user in users:
-        if user.is_admin:
-            user_status = 'Admin'
-        else:
-            user_status = 'No admin'
-    return render_template('admin/users_list.html', users=users, title = 'Users', status=user_status)
+    return render_template('admin/users_list.html', users=users, title = 'Users')

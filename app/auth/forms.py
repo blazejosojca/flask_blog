@@ -78,3 +78,9 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password_confirmation = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
+
+class DeleteUserForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=24)]
+                           )
+    submit = SubmitField('Delete User')
+

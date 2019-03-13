@@ -9,7 +9,7 @@ from app.models import User, Post
 from app.auth import bp
 from app.auth.email import send_password_reset_email
 from app.auth.utils import save_image_file
-from app.auth.forms import RegistrationForm, LoginForm, UpdateUserForm, RequestResetForm, ResetPasswordForm
+from app.auth.forms import RegistrationForm, LoginForm, UpdateUserForm, RequestResetForm, ResetPasswordForm, DeleteUserForm
 
 
 @bp.route("/register", methods=['GET', 'POST'])
@@ -90,7 +90,19 @@ def user_update():
 @bp.route('/user/delete', methods=['GET', 'POST'])
 @login_required
 def user_delete():
-    return render_template('auth/user_delete.html')
+    form = DeleteUserForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if current_user == user or current_user.is_admin:
+            db.session.delete(user)
+            db.session.commit()
+            flash("User was deleted")
+            if current_user.is_admin:
+                return redirect(url_for('admin.admin_dashboard'))
+            return redirect(url_for('main.home'))
+        else:
+            return redirect(('errors/403.html'))
+    return render_template('auth/user_delete.html', title='User delete', form=form)
 
 @bp.route('/user/<username>', methods=['GET'])
 def user_posts(username):
