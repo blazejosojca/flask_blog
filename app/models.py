@@ -45,7 +45,6 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hashed, password)
 
-
     def __repr__(self):
         return '<User - {0}, {1},{2} >'.format(self.username, self.email, self.image_file)
 
