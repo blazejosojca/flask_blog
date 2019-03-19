@@ -20,7 +20,7 @@
                 <p>{{user.about_me}}</p>
                 {% endif %}
                 {% if user.last_seen %}
-                <p>Last seen: {{user.last_seen.strftime('%Y/%m/%d %H:%M:%S')}}</p>
+                <p>Last seen on : {{ moment(user.last_seen).format('LLL', refresh=True) }}</p>
                 {% endif %}
             </td>
             <a class="btn btn-outline-info" href="{{ url_for('auth.user_posts', username=current_user.username) }}">See posts</a>
