@@ -6,11 +6,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="intro-message">
-                    <h1>Users list</h1>
+                    <h1>{{ _(Users list) }}</h1>
                     <hr class="intro-divider">
                     {% for user in users %}
                         <div class="content-section">
-                            <p>Username: {{ user.username }} </p>
+                            <p>{{ _(Username) }}: {{ user.username }} </p>
                             <p>Email: {{ user.email}}</p>
                             <p>Status:
                             {% if user.is_admin %}
@@ -19,8 +19,8 @@
                                 No admin
                             {% endif %}
                             </p>
-                            <a class="btn btn-outline-info" href="{{ url_for('auth.user_delete') }}">Delete</a>
-                            <a class="btn btn-outline-info" href="{{ url_for('auth.reset_password_request') }}">Reset password</a>
+                            <a class="btn btn-outline-info" href="{{ url_for('auth.user_delete') }}"> {{ _(Delete) }}</a>
+                            <a class="btn btn-outline-info" href="{{ url_for('auth.reset_password_request') }}">{{ _(Reset password) }}</a>
                         </div>
                     {% endfor %}
                 </div>

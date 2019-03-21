@@ -1,12 +1,12 @@
 {% extends "base.html"%}
 
 {% block content %}
-<h1>Deleting user</h1>
+<h1>{{ _('Deleting user') }}</h1>
 
     <form method='POST' action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Confirm username which should be deleted</legend>
+                <legend class="border-bottom mb-4">{{ _('Confirm username which should be deleted') }}</legend>
                 <div class="form-group">
                     {{ form.username.label(class='form-control-label') }}
                     {% if form.username.errors %}

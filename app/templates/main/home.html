@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Welcome
+<h1> {{ _('Welcome') }}
     {% if current_user.is_anonymous %}
-    guest!
+    {{ _('guest!') }}
     {% else %}
     {{ current_user.username}}
     {% endif %}

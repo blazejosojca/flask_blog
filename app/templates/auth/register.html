@@ -1,11 +1,11 @@
 {% extends "base.html"%}
 {% block content %}
-    <h1>Register</h1>
+    <h1> {{ _('Register') }}</h1>
     <div class="content-section">
         <form method='POST' action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join!</legend>
+                <legend class="border-bottom mb-4">{{ _('Join!') }}</legend>
                 <div class="form-group">
                     {{ form.username.label(class='form-control-label')}}
 
@@ -71,8 +71,7 @@
     </div>
     <div class="border-top pt-3">
         <small class="text-muted">
-            Do you have already account? Go to
-            <a class="ml-2" href="{{url_for('auth.login')}}">Login Page</a>
+            {{ _('Do you have already account? Go to') }}<a class="ml-2" href="{{url_for('auth.login')}}">{{ _('Login Page') }}</a>
         </small>
     </div>
 

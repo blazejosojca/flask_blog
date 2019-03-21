@@ -2,14 +2,14 @@
 
 {% block content %}
     <div>
-        <h1>Account details</h1>
+        <h1>{{ _(Account details) }}</h1>
     </div>
     <div class="content-section">
         <div class="media">
             <img class="rounded-circle account-img" src="{{ image_file }}">
                 <div class="media-body">
                     <h2 class="account-heading">{{ current_user.username }}</h2>
-                    <a class="btn btn-secondary btn-small" href="{{ url_for('auth.user_update') }}">Edit</a>
+                    <a class="btn btn-secondary btn-small" href="{{ url_for('auth.user_update') }}"> {{ _(Edit) }}</a>
                     <p class="text-secondary">Email: {{ current_user.email }}</p>
                 </div>
         </div>
@@ -20,15 +20,15 @@
                 <p>{{user.about_me}}</p>
                 {% endif %}
                 {% if user.last_seen %}
-                <p>Last seen on : {{ moment(user.last_seen).format('LLL', refresh=True) }}</p>
+                <p>{{ _(Last seen on) }} : {{ moment(user.last_seen).format('LLL', refresh=True) }}</p>
                 {% endif %}
             </td>
-            <a class="btn btn-outline-info" href="{{ url_for('auth.user_posts', username=current_user.username) }}">See posts</a>
+            <a class="btn btn-outline-info" href="{{ url_for('auth.user_posts', username=current_user.username) }}"> {{ _(See posts) }} </a>
         </div>
     </div>
     <div class="content-section">
         <div>
-            <a class="btn btn-warning btn-small" href="{{ url_for('auth.user_delete') }}">Delete Account</a>
+            <a class="btn btn-warning btn-small" href="{{ url_for('auth.user_delete') }}"> {{ _(Delete Account) }}</a>
         </div>
     </div>
 

@@ -1,7 +1,7 @@
 {% extends "base.html"%}
 
 {% block content %}
-    <h1 class="mb-3">User: {{ user.username }} ({{ posts.total}})</h1>
+    <h1 class="mb-3">{{ _('User') }}: {{ user.username }} ({{ posts.total}})</h1>
 
     <table>
         <tr valign="top">
