@@ -1,32 +1,38 @@
 import os
 import logging
-from logging.handlers import RotatingFileHandler
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+
+from flask import Flask, request, current_app
+from flask_babel import Babel, lazy_gettext as _l
 from flask_login import LoginManager
+from flask_migrate import Migrate
 from flask_moment import Moment
-from config import Config, DevelopmentConfig
 from flask_mail import Mail
+from flask_sqlalchemy import SQLAlchemy
+
+from config import Config, DevelopmentConfig
+from logging.handlers import RotatingFileHandler
 
 
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
-login.login_message = 'Please log in to access this page'
+login.login_message = _l('Please log in to access this page')
 mail = Mail()
 moment = Moment()
+babel = Babel()
 
 
 def create_app(config_class=DevelopmentConfig):
     app = Flask(__name__)
     app.config.from_object(config_class)
+
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
+    babel.init_app(app)
 
     from app.auth import bp as auth_bp
     from app.posts import bp as posts_bp
@@ -56,3 +62,11 @@ def create_app(config_class=DevelopmentConfig):
         app.logger.info('Flask blog')
 
     return app
+
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(current_app.config['LANGUAGES'])
+
+
+from app import models

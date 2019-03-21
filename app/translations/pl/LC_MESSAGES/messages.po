@@ -1,0 +1,253 @@
+# Polish translations for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-03-21 21:33+0100\n"
+"PO-Revision-Date: 2019-03-21 20:48+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pl\n"
+"Language-Team: pl <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
+"(n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: app/__init__.py:20
+msgid "Please log in to access this page"
+msgstr "Zaloguj się aby uzyskać dostęp do tej strony"
+
+#: app/auth/email.py:36
+msgid "Blog Reset Your Password"
+msgstr "Odzyskiwanie hasła do Bloga"
+
+#: app/auth/forms.py:12 app/auth/forms.py:40
+msgid "Username"
+msgstr "Użytkownik"
+
+#: app/auth/forms.py:14 app/auth/forms.py:34
+msgid "Password"
+msgstr "Hasło"
+
+#: app/auth/forms.py:16
+msgid "Confirm Password"
+msgstr "Potwierdź hasło"
+
+#: app/auth/forms.py:17
+msgid "Sign Up"
+msgstr "Załóż konto"
+
+#: app/auth/forms.py:23
+msgid "This username already exists. Please use a different username!"
+msgstr "Uzytkownik o tej nazwie istnieje. Wybierz inną nazwę użytkownika!"
+
+#: app/auth/forms.py:29
+msgid "This email already exists. Please use a different email!"
+msgstr "Uzytkownik o tym adresie email istnieje. Wybierz inny adres email!"
+
+#: app/auth/forms.py:35
+msgid "Remember Me"
+msgstr "Zapamiętaj mnie"
+
+#: app/auth/forms.py:36
+msgid "Sign In"
+msgstr "Zaloguj"
+
+#: app/auth/forms.py:43
+msgid "About me"
+msgstr "O mnie"
+
+#: app/auth/forms.py:44
+msgid "Update profile picture"
+msgstr "Uaktuanij zdjęcie profilowe"
+
+#: app/auth/forms.py:46
+msgid "Submit"
+msgstr "Wyślij"
+
+#: app/auth/forms.py:57
+msgid "Please use a different username!"
+msgstr "Użyj innej nazwy użytkownika!"
+
+#: app/auth/forms.py:63
+msgid "Please use a different email!"
+msgstr "Użyj innego adresu email!"
+
+#: app/auth/forms.py:68
+msgid "Request Password Reset"
+msgstr "Żądanie zmiany hasła"
+
+#: app/auth/routes.py:28
+msgid "A new user added. Congratulations!"
+msgstr "Nowy użytkownik został dodany. Gratulację!"
+
+#: app/auth/routes.py:42
+msgid "You were logged in!"
+msgstr "Zostałeś zalogowany!"
+
+#: app/auth/routes.py:51
+msgid "Credentials are incorrect!"
+msgstr "Dane logowania sią nieprawidłowe!"
+
+#: app/auth/routes.py:82
+msgid "Your change has been saved!"
+msgstr "Twoje zmiany zostały zapisane!"
+
+#: app/auth/routes.py:100
+msgid "User was deleted"
+msgstr "Użytkownik został pożegnany"
+
+#: app/auth/routes.py:129
+msgid "The email has been sent to reset your password!"
+msgstr "Na podany adres przełano wiadomość w celu zmaiany hasła!"
+
+#: app/auth/routes.py:145
+msgid "Your password has been reset!"
+msgstr "Twoje hasło zostało zmienione!"
+
+#: app/posts/forms.py:8
+msgid "Title"
+msgstr "Tytuł"
+
+#: app/posts/forms.py:9
+msgid "Content"
+msgstr "Treść"
+
+#: app/posts/forms.py:10 app/templates/base.html:45
+msgid "Create Post"
+msgstr "Uwtórz post"
+
+#: app/posts/forms.py:14
+msgid "Update Post"
+msgstr "Aktualizuj post"
+
+#: app/posts/routes.py:23
+msgid "Post was created"
+msgstr "Post został stworzony"
+
+#: app/posts/routes.py:45
+msgid "Post has been updated!"
+msgstr "Post został zaktualizowany"
+
+#: app/posts/routes.py:61
+msgid "Post has been deleted"
+msgstr "Post został uzunięty"
+
+#: app/templates/base.html:43
+msgid "Admin"
+msgstr "Administrator"
+
+#: app/templates/base.html:47
+msgid "Logout"
+msgstr "Wyloguj"
+
+#: app/templates/base.html:50
+msgid "Login"
+msgstr "Zaloguj"
+
+#: app/templates/auth/register.html:3 app/templates/base.html:51
+msgid "Register"
+msgstr "Zarejstruj"
+
+#: app/templates/base.html:82
+msgid "You can put any information here you'd like."
+msgstr "Hulaj dusza piekła nie ma!"
+
+#: app/templates/base.html:84
+msgid "Latest Posts"
+msgstr "Ostatnie posty"
+
+#: app/templates/base.html:85
+msgid "Announcements"
+msgstr "Ogłoszenia"
+
+#: app/templates/base.html:86
+msgid "Calendars"
+msgstr "Kalendarzyk"
+
+#: app/templates/auth/login.html:7
+msgid "Log In!"
+msgstr "Zaloguj!"
+
+#: app/templates/auth/login.html:44
+msgid "Click to Reset Password"
+msgstr "Przywracanie hasła"
+
+#: app/templates/auth/login.html:50
+msgid "Need an account? Go to"
+msgstr "Potrzebujesz konta. Przejdź do"
+
+#: app/templates/auth/login.html:51
+msgid "Register Page"
+msgstr "Strona rejestracji"
+
+#: app/templates/auth/register.html:8
+msgid "Join!"
+msgstr "Załóż konto!"
+
+#: app/templates/auth/register.html:74
+msgid "Do you have already account? Go to"
+msgstr "Nie masz jeszcze konta? Idź do"
+
+#: app/templates/auth/register.html:74 app/templates/auth/reset_password.html:3
+msgid "Login Page"
+msgstr "Strona logowania"
+
+#: app/templates/auth/reset_password.html:8
+#: app/templates/auth/reset_password_request.html:7
+msgid "Reset Password"
+msgstr "Zresetuj hasło"
+
+#: app/templates/auth/user_delete.html:4
+msgid "Deleting user"
+msgstr "Usuń użytkownika"
+
+#: app/templates/auth/user_delete.html:9
+msgid "Confirm username which should be deleted"
+msgstr "Potwierdź użytkownika do usunięcia"
+
+#: app/templates/auth/user_details.html:4
+msgid "User"
+msgstr "Użytkownik"
+
+#: app/templates/auth/user_update.html:4
+msgid "Edit Profile"
+msgstr "Edytuj profil"
+
+#: app/templates/errors/403.html:10
+msgid "You do not have sufficient permissions to access this page."
+msgstr "Nie masz wymaganych uprawnień!"
+
+#: app/templates/errors/404.html:10
+msgid "The page you're looking for doesn't exist."
+msgstr "Strona której szukasz nie istnieje"
+
+#: app/templates/main/about.html:3
+msgid "About Page"
+msgstr "O blogu"
+
+#: app/templates/main/home.html:3
+msgid "Welcome"
+msgstr "Witaj"
+
+#: app/templates/main/home.html:5
+msgid "guest!"
+msgstr "nieznajomy!"
+
+#: app/templates/posts/create_post.html:41
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: app/templates/posts/post_details.html:15
+msgid "Delete"
+msgstr "Usuń"
+
+#~ msgid "Email"
+#~ msgstr "Email"
+

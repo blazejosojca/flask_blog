@@ -5,6 +5,7 @@ from mail_config import MailSettings
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
+
 class Config(object):
     ENV = 'development'
     TESTING = False
@@ -13,6 +14,7 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard_to_guess_12345678'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    LANGUAGES = ['en', 'pl']
 
     #mail configuration for sending logs and emails to reset password
     MAIL_SERVER = MailSettings.server
