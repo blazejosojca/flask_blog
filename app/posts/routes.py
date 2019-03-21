@@ -2,7 +2,9 @@ import os
 
 from flask import url_for, render_template, flash, request, abort
 from flask_login import current_user, login_required
+from flask_babel import _, lazy_gettext as _l
 from werkzeug.utils import redirect
+
 
 from app import db
 from app.models import Post, User
@@ -18,7 +20,7 @@ def create_post():
         post = Post(title=form.title.data, content=form.content.data, author=current_user)
         db.session.add(post)
         db.session.commit()
-        flash("Post was created", 'success')
+        flash(_("Post was created", 'success'))
         return redirect(url_for('main.home'))
     return render_template('posts/create_post.html', title='New Post', form=form, legend='New Post')
 
@@ -40,7 +42,7 @@ def post_update(post_id):
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
-        flash('Post has been updated!', 'success')
+        flash(_('Post has been updated!'), 'success')
         return redirect(url_for('posts.post_view', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
@@ -56,5 +58,5 @@ def post_delete(post_id):
         abort(403)
     db.session.delete(post)
     db.session.commit()
-    flash('Post has been deleted')
+    flash(_('Post has been deleted'))
     return redirect(url_for('main.home'))
