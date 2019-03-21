@@ -1,5 +1,6 @@
 from flask import Blueprint, url_for, render_template, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_babel import _, lazy_gettext as _l
 from werkzeug.urls import url_parse
 from werkzeug.utils import redirect
 
@@ -24,7 +25,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        flash("A new user added. Congratulations!", 'success')
+        flash(_l("A new user added. Congratulations!", 'success'))
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Register', form=form)
 
@@ -38,7 +39,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.check_password(form.password.data):
             login_user(user, remember=form.remember.data)
-            flash('You were logged in!', 'info')
+            flash(_l('You were logged in!'), 'info')
             if user.is_admin:
                 return redirect(url_for('admin.admin_dashboard'))
             else:
@@ -47,7 +48,7 @@ def login():
                     next_page = url_for('main.home')
                 return redirect(next_page)
         else:
-            flash('Credentials are incorrect!', 'warning')
+            flash(_l('Credentials are incorrect!'), 'warning')
             return redirect(url_for('auth.login'))
     return render_template('auth/login.html', title='Login', form=form)
 
@@ -78,7 +79,7 @@ def user_update():
         current_user.email = form.email.data
         current_user.about_me = form.about_me.data
         db.session.commit()
-        flash("Your change has been saved!", 'info')
+        flash(_l("Your change has been saved!"), 'info')
         return redirect(url_for('auth.user_update'))
     elif request.method == 'GET':
         form.username.data = current_user.username
@@ -96,7 +97,7 @@ def user_delete():
         if current_user == user or current_user.is_admin:
             db.session.delete(user)
             db.session.commit()
-            flash("User was deleted")
+            flash(_l("User was deleted"))
             if current_user.is_admin:
                 return redirect(url_for('admin.admin_dashboard'))
             return redirect(url_for('main.home'))
@@ -125,7 +126,7 @@ def reset_password_request():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             send_password_reset_email(user)
-        flash('The email has been sent to reset your password!', 'info')
+        flash(_l('The email has been sent to reset your password!'), 'info')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password_request.html', title='Reset Password', form=form)
 
@@ -141,7 +142,7 @@ def reset_password(token):
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash('Your password has been reset!')
+        flash(_l('Your password has been reset!'))
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password',
                            title='Reset Password',
