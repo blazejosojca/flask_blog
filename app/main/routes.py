@@ -1,7 +1,8 @@
 from datetime import datetime
 
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, g
 from flask_login import current_user
+from flask_babel import get_locale
 
 from app import db
 from app.main import bp
@@ -15,6 +16,7 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+    g.locale = str(get_locale())
 
 
 @bp.route("/")
