@@ -1,5 +1,7 @@
 import os
 import logging
+from logging.handlers import RotatingFileHandler
+
 
 from flask import Flask, request, current_app
 from flask_babel import Babel, lazy_gettext as _l
@@ -8,9 +10,7 @@ from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
-
 from config import Config, DevelopmentConfig
-from logging.handlers import RotatingFileHandler
 
 
 db = SQLAlchemy()

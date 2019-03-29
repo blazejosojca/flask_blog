@@ -25,7 +25,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        flash(_l("A new user added. Congratulations!", 'success'))
+        flash(_l("A new user added. Congratulations!"), 'success')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Register', form=form)
 
@@ -135,7 +135,7 @@ def reset_password_request():
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
-    user = User.verify_reset_password_token(token)
+    user = verify_reset_password_token(token)
     if not user:
         return redirect(url_for('main.home'))
     form = ResetPasswordForm()

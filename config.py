@@ -1,22 +1,26 @@
+""" import modules """
 import os
 from dotenv import load_dotenv
 from mail_config import MailSettings
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-load_dotenv(os.path.join(basedir, '.env'))
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(BASEDIR, '.env'))
 
 
 class Config(object):
+    """
+    Base configuration class. With default values
+    """
     ENV = 'development'
     TESTING = False
     DEBUG = False
     CSRF_ENABLED = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard_to_guess_12345678'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or 'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') \
+                              or 'sqlite:///' + os.path.join(BASEDIR, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     LANGUAGES = ['en', 'pl']
 
-    #mail configuration for sending logs and emails to reset password
     MAIL_SERVER = MailSettings.server
     MAIL_PORT = MailSettings.port
     MAIL_USE_TLS = MailSettings.use_tls
@@ -26,15 +30,18 @@ class Config(object):
 
 
 class DevelopmentConfig(Config):
+    """ Configuration for development enviroment """
     DEVELOPMENT = True
     DEBUG = True
 
 
 class ProductionConfig(Config):
+    """ Configuration for production enviroment. Without debug mode. """
     ENV = 'production'
     DEBUG = False
 
 
 class StagingConfig(Config):
+    """ Configuration for staging enviroment """
     DEVELOPMENT = True
     DEBUG = True

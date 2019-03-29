@@ -5,7 +5,7 @@ from flask import url_for, current_app
 from flask_testing import TestCase
 
 from app import create_app, db
-from config import basedir, Config
+from config import BASEDIR, Config
 from app.models import User, Post
 
 TEST_USER_NAME = 'test_user'
@@ -19,7 +19,7 @@ TEST_ADMIN_PASSWORD = 'admin123'
 class TestConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASEDIR, 'test.db')
 
 
 class BaseTest(TestCase):
@@ -61,7 +61,7 @@ class BaseTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_database(self):
-        tester = os.path.exists(os.path.join(basedir, 'test.db'))
+        tester = os.path.exists(os.path.join(BASEDIR, 'test.db'))
         self.assertTrue(tester)
 
     # Base test methods for further using
