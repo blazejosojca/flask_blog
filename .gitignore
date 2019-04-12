@@ -30,7 +30,7 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# Unit test / coverage reports / functional test
 htmlcov/
 .tox/
 .coverage
@@ -41,6 +41,7 @@ coverage.xml
 *.cover
 .hypothesis/
 .pytest_cache/
+func_tests/
 
 
 # Django stuff:
@@ -129,4 +130,7 @@ app/static/profile_pics/*
 
 #config_files
 mail_config.py
+
+coverage_html_report/
+
 

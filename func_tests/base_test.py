@@ -3,6 +3,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
+from app import create_app
+from config import Config
+
+create_app(Config)
+
 
 driver = webdriver.Firefox()
 
