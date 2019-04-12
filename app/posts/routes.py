@@ -1,13 +1,11 @@
-import os
-
 from flask import url_for, render_template, flash, request, abort
 from flask_login import current_user, login_required
-from flask_babel import _, lazy_gettext as _l
+from flask_babel import _
 from werkzeug.utils import redirect
 
 
 from app import db
-from app.models import Post, User
+from app.models import Post
 from app.posts import bp
 from app.posts.forms import UpdatePostForm, CreatePostForm
 

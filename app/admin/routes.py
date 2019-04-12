@@ -1,5 +1,3 @@
-from functools import wraps
-
 from flask import abort, render_template
 from flask_login import current_user, login_required
 
@@ -9,15 +7,14 @@ from app.models import User
 
 def check_admin():
     if not current_user.is_admin:
-            abort(403)
+        abort(403)
+
 
 @bp.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def admin_dashboard():
     check_admin()
-
     return render_template('admin/dashboard.html', title='Dashboard')
-
 
 
 @bp.route('/users_list', methods=['GET', 'POST'])
@@ -25,4 +22,4 @@ def admin_dashboard():
 def list_users():
     check_admin()
     users = User.query.all()
-    return render_template('admin/users_list.html', users=users, title = 'Users')
+    return render_template('admin/users_list.html', users=users, title='Users')

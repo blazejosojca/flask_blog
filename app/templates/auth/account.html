@@ -15,14 +15,12 @@
         </div>
 
         <div>
-            <td>
                 {% if user.about_me %}
                 <p>{{user.about_me}}</p>
                 {% endif %}
                 {% if user.last_seen %}
                 <p>{{ _(Last seen on) }} : {{ moment(user.last_seen).format('LLL', refresh=True) }}</p>
                 {% endif %}
-            </td>
             <a class="btn btn-outline-info" href="{{ url_for('auth.user_posts', username=current_user.username) }}"> {{ _(See posts) }} </a>
         </div>
     </div>

@@ -10,7 +10,6 @@ from app import create_app, db
 from config import BASEDIR, Config
 from app.models import User, Post
 
-from app.admin.routes import check_admin
 
 # setting testing variables for test user
 TEST_USER_NAME = 'test_user'

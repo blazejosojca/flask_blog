@@ -1,3 +1,5 @@
+# unit_tests.py
+
 import unittest
 import os
 from flask import url_for, current_app
@@ -7,6 +9,11 @@ from flask_testing import TestCase
 from app import create_app, db
 from config import BASEDIR, Config
 from app.models import User, Post
+
+from app.admin.routes import check_admin
+
+
+# setting testing variables for test user
 
 TEST_USER_NAME = 'test_user'
 TEST_USER_EMAIL = 'test@mail.com'
@@ -148,6 +155,13 @@ class TestRoutes(BaseTest):
         response = self.app.get(url_for('auth.logout'), follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
+    def test_admin_dashboard_page(self):
+        target_url = url_for('admin.admin_dashboard')
+        response = self.app.get(target_url)
+        redirect_url=url_for('auth.login')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, redirect_url)
+
 
 class TestLoginRoute(BaseTest):
 
@@ -164,12 +178,16 @@ class TestLoginRoute(BaseTest):
         self.assertIn(b'You were logged in!', response.data)
 
     def test_login_with_incorrect_credentials(self):
-        response = self.login(TEST_USER_EMAIL, '123')
+        response = self.login('mail@mail.com', '123')
         self.assertIn(b'Credentials are incorrect!', response.data)
 
     def test_login_with_incorrect_email_format(self):
-        response = self.login('mail-mail', TEST_PASSWORD)
+        response = self.login('test.mail.com', TEST_PASSWORD)
         self.assertIn(b'Invalid email address', response.data)
+
+    def test_login_with_correct_email_incorrect_password(self):
+        response = self.login( TEST_USER_EMAIL, '123')
+        self.assertIn(b'Credentials are incorrect!', response.data)
 
 
 class TestRegistrationRoute(BaseTest):
@@ -185,6 +203,14 @@ class TestRegistrationRoute(BaseTest):
     def test_registration_with_data_of_existing_admin(self):
         response = self.register(TEST_ADMIN_NAME, TEST_ADMIN_MAIL, TEST_ADMIN_PASSWORD, TEST_ADMIN_PASSWORD)
         self.assertIn(b'This username already exists. Please use a different username!', response.data)
+
+
+class TestAdminRoute(BaseTest):
+
+    def test_is_admin_current_user(self):
+        logged_user = self.login(TEST_USER_EMAIL, TEST_PASSWORD)
+        response = self.app.get(url_for('admin.admin_dashboard'), follow_redirects=True)
+        self.assertEqual(response.status_code, 403)
 
 
 if __name__ == '__main__':

@@ -9,10 +9,11 @@
             <h1> 404 Error </h1>
             <h3> {{ _('The page you\'re looking for doesn\'t exist.') }}</h3>
             <hr class="intro-divider">
-            <a href="{{ url_for('main.home') }}" class="btn btn-default btn-lg">
-                <i class="fa fa-home"></i>
-                                {{_(Home) }}
-            </a>
+            <button type="button" class="btn btn-outline-primary btn-lg">
+                <a href="{{ url_for('main.home') }}">
+                    <i class="fa fa-home">{{_('Home') }}</i>
+                </a>
+            </button>
         </div>
       </div>
     </div>

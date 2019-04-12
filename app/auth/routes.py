@@ -1,6 +1,6 @@
-from flask import Blueprint, url_for, render_template, flash, request
+from flask import url_for, render_template, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
-from flask_babel import _, lazy_gettext as _l
+from flask_babel import lazy_gettext as _l
 from werkzeug.urls import url_parse
 from werkzeug.utils import redirect
 
@@ -10,7 +10,12 @@ from app.models import User, Post
 from app.auth import bp
 from app.auth.email import send_password_reset_email
 from app.auth.utils import save_image_file
-from app.auth.forms import RegistrationForm, LoginForm, UpdateUserForm, RequestResetForm, ResetPasswordForm, DeleteUserForm
+from app.auth.forms import (RegistrationForm,
+                            LoginForm,
+                            UpdateUserForm,
+                            RequestResetForm,
+                            ResetPasswordForm,
+                            DeleteUserForm)
 
 
 @bp.route("/register", methods=['GET', 'POST'])
@@ -19,8 +24,7 @@ def register():
         return redirect(url_for('main.home'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data,
-                    email=form.email.data)
+        user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -102,8 +106,9 @@ def user_delete():
                 return redirect(url_for('admin.admin_dashboard'))
             return redirect(url_for('main.home'))
         else:
-            return redirect(('errors/403.html'))
+            return redirect('errors/403.html')
     return render_template('auth/user_delete.html', title='User delete', form=form)
+
 
 @bp.route('/user/<username>', methods=['GET'])
 def user_posts(username):
@@ -114,7 +119,10 @@ def user_posts(username):
         .order_by(Post.date_posted.desc())\
         .paginate(page=page, per_page=5)
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('auth/user_details.html', user=user, posts=posts, title='User details', image_file=image_file)
+    return render_template('auth/user_details.html',
+                           user=user, posts=posts,
+                           title='User details',
+                           image_file=image_file)
 
 
 @bp.route("/reset_password", methods=['GET', 'POST'])
@@ -135,7 +143,7 @@ def reset_password_request():
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
-    user = verify_reset_password_token(token)
+    user = User.verify_reset_password_token(token)
     if not user:
         return redirect(url_for('main.home'))
     form = ResetPasswordForm()

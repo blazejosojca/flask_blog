@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField
-from flask_babel import _, lazy_gettext as _l
+from flask_babel import lazy_gettext as _l
 from wtforms import StringField, TextAreaField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, ValidationError, Length, EqualTo
 
@@ -8,8 +8,9 @@ from app.models import User
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField(_l('Username', validators=[DataRequired(),                                                     Length(min=2, max=24)]))
-    email = StringField('Email', validators=[DataRequired(),Email()])
+    username = StringField(_l('Username',
+                              validators=[DataRequired(), Length(min=2, max=24)]))
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField(_l('Password', validators=[DataRequired()]))
     password_confirmation = PasswordField(_l('Confirm Password',
                                           validators=[DataRequired(), EqualTo('password')]))
@@ -77,8 +78,8 @@ class ResetPasswordForm(FlaskForm):
     password_confirmation = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
 
+
 class DeleteUserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=24)]
                            )
     submit = SubmitField('Delete User')
-
