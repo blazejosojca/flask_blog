@@ -83,6 +83,7 @@ class TestRoutes(BaseTest):
         target_url = url_for('admin.admin_dashboard')
         response = self.app.get(target_url)
         redirect_url = url_for('auth.login')
+
         self.assertEqual(response.status_code, 302)
 
 
