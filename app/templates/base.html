@@ -9,10 +9,6 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-  <!--Include Moment.js-->
-  {{ moment.include_jquery() }}
-  {{ moment.include_moment() }}
-  {{ moment.lang(g.locale) }}
 
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 
@@ -94,8 +90,31 @@
     </div>
   </main>
 
-
+{% block scripts %}
   <!-- Optional JavaScript -->
+  {{ moment.include_jquery() }}
+  {{ moment.include_moment() }}
+  {{ moment.lang(g.locale) }}
+
+  <script>
+    function translate(sourceElem, destElem, sourceLang, destLang) {
+  $(destElem).html(<img src="{{ url_for('static', filename='loading.gif') }}">);
+  $.post('/translate', {
+    text: $(sourceElem).text(),
+    source_language: sourceLang,
+    dest_language: destLang
+  }).done(function(response) {
+    $(destElem).text(response['text'])
+  }).fail(function() {
+    $(destElem).text("{{ _('Error: Could not contact server') }}");
+  });
+
+}
+  </script>
+{% endblock %}
+
+
+
   <!-- jQuery first, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>
