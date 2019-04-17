@@ -7,22 +7,11 @@
                 <small class="text-muted">{{ moment(post.date_posted).fromNow() }}</small>
             </div>
             <h2>
-                <a href="{{url_for('posts.post_view', post_id=post.id) }}" class="article-title">{{ post.title }}</a>
+                <a id="title{{ post.id }}" href="{{url_for('posts.post_view', post_id=post.id) }}" class="article-title">{{ post.title }}</a>
             </h2>
             <br>
-            <span id="post{{ post.id }}">{{ post.content }}</span>
-            {% if post.language and post.language != g.locale %}
-            <span id="translation{{ post.id }}">
-                <a href="javascript:translate(
-                            '#post{{ post.id }}',
-                            '#translation{{ post.id }}',
-                            '{{ post.language }}',
-                            '{{ g.locale }}'
-                            );">
-                            {{ _('Translate') }}
-                </a>
-            </span>
-            {% endif %}
+            <span id="content{{ post.id }}">{{ post.content }}</span>
+
         </div>
     </article>
-{% endblock content %}
+{% endblock content%}

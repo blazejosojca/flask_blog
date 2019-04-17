@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import request, render_template, g
 from flask_login import current_user
 from flask_babel import get_locale
+from guess_language import guess_language
 
 from app import db
 from app.main import bp
@@ -17,8 +18,8 @@ def before_request():
     g.locale = str(get_locale())
 
 
-@bp.route("/")
-@bp.route("/home")
+@bp.route("/", methods=['GET', 'POST'])
+@bp.route("/home", methods=['GET', 'POST'])
 def home():
     page = request.args.get('page', 1, type=int)
     query = Post.query.order_by(Post.date_posted.desc())

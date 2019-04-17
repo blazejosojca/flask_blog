@@ -1,24 +1,23 @@
-from flask import url_for, render_template, flash, request, abort
+from flask import url_for, render_template, flash, request, abort, jsonify
 from flask_login import current_user, login_required
 from flask_babel import _
 from werkzeug.utils import redirect
 
-
 from app import db
 from app.models import Post
 from app.posts import bp
-from app.posts.forms import UpdatePostForm, CreatePostForm
+from app.posts.forms import PostForm
 
 
 @bp.route('/post/new', methods=['GET', 'POST'])
 @login_required
 def create_post():
-    form = CreatePostForm()
+    form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, content=form.content.data, author=current_user)
         db.session.add(post)
         db.session.commit()
-        flash(_("Post was created", 'success'))
+        flash(_("Post was created"), 'success')
         return redirect(url_for('main.home'))
     return render_template('posts/create_post.html', title='New Post', form=form, legend='New Post')
 
@@ -35,7 +34,7 @@ def post_update(post_id):
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
         abort(403)
-    form = UpdatePostForm()
+    form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
