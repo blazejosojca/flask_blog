@@ -12,16 +12,9 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #2d5986;
 }
 
-.site-header .navbar-nav .nav-link .navbar-brand{
-  color: #cbd5db;
-}
-
-.site-header .navbar-nav .nav-link:hover {
-  color: #ffffff;
-}
-
 .site-header .navbar-nav .nav-link.active {
   font-weight: 400;
+
 }
 
 .content-section {
@@ -30,6 +23,7 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid #dddddd;
   border-radius: 3px;
   margin-bottom: 20px;
+
 }
 
 .article-title {
@@ -79,9 +73,6 @@ a.article-title:hover {
   font-size: 2.5rem;
 }
 
-.navbar-brand {
-color: #ffffff;
-}
 
 .jumbotron {
 padding: 1rem;
@@ -100,7 +91,13 @@ text-align:center;
 }
 
 .display-3 {
-color: #2d5986;
 font-size: 3.5rem;
 font-weight: 300;
+color: red;
+
 }
+
+#title-post-translate {
+font-size;: 50%;
+}
+

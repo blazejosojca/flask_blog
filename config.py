@@ -27,12 +27,15 @@ class Config(object):
     MAIL_USERNAME = MailSettings.username
     MAIL_PASSWORD = MailSettings.password
     ADMINS = ['testblazej2018@gmail.com']
+    MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')
+
 
 
 class DevelopmentConfig(Config):
     """ Configuration for development enviroment """
     DEVELOPMENT = True
     DEBUG = True
+
 
 
 class ProductionConfig(Config):
