@@ -13,6 +13,12 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+post_tags = db.Table(
+    'post_tags',
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
+    db.Column('post_id', db.Integer, db.ForeignKey('post.id'))
+)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
@@ -50,12 +56,29 @@ def verify_reset_password_token(token):
 
 
 class Post(db.Model):
+    __searchable__ = ['body']
+    STATUS_PUBLIC = 0
+    STATUS_DRAFT = 1
+    STATUS_DELETED = 2
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status =  db.Column(db.SmallInteger, default=STATUS_PUBLIC)
+    tags = db.relationship('Tag', secondary=post_tags,
+                           backref=db.backref('posts', lazy='dynamic'))
+
 
     def __repr__(self):
         return '<Post - {0}, {1}>'.format(self.title, self.date_posted)
+
+
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    slug = db.Column(db.String(64), unique=True)
+    
+    def __repr__(self):
+        return '<Tag {}>'.format(self.name) 

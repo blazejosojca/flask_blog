@@ -11,7 +11,7 @@
             <p class="article-content">{{ post.content }}</p>
             {% if post.author == current_user %}
             <div>
-                <a class="btn btn-secondary" href="{{ url_for('posts.post_update', post_id = post.id) }}">{{ _('Edit') }}</a>
+                <button class="btn btn-secondary" href="{{ url_for('posts.post_update', post_id = post.id) }}">{{ _('Edit') }}</button>
 
                 <button type="button" class="btn btn-danger btn-small m-1" data-toggle="modal" data-target="#deleteModal">{{ _('Delete') }}</button>
             </div>

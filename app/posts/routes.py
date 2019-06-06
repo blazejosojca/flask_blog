@@ -4,7 +4,7 @@ from flask_babel import _
 from werkzeug.utils import redirect
 
 from app import db
-from app.models import Post
+from app.models import Post, Tag
 from app.posts import bp
 from app.posts.forms import PostForm
 
@@ -14,7 +14,9 @@ from app.posts.forms import PostForm
 def create_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        post = Post(title=form.title.data,
+                    content=form.content.data,
+                    author=current_user)
         db.session.add(post)
         db.session.commit()
         flash(_("Post was created"), 'success')
@@ -38,6 +40,7 @@ def post_update(post_id):
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
+        post.status = form.status.data
         db.session.commit()
         flash(_('Post has been updated!'), 'success')
         return redirect(url_for('posts.post_view', post_id=post.id))
@@ -53,7 +56,13 @@ def post_delete(post_id):
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
         abort(403)
-    db.session.delete(post)
+    post.status = Post.STATUS_DELETED
+    db.session.add(post)
     db.session.commit()
     flash(_('Post has been deleted'))
     return redirect(url_for('main.home'))
+
+@bp.route('/post/tags', methods=['POST','GET'])
+@login_required
+def tags():
+    pass

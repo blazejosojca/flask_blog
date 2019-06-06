@@ -11,6 +11,7 @@ from flask_moment import Moment
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from config import Config, DevelopmentConfig
+from flask_bootstrap import Bootstrap
 
 
 db = SQLAlchemy()
@@ -21,6 +22,7 @@ login.login_message = _l('Please log in to access this page')
 mail = Mail()
 moment = Moment()
 babel = Babel()
+bootstrap = Bootstrap()
 
 
 def create_app(config_class=DevelopmentConfig):
@@ -33,6 +35,8 @@ def create_app(config_class=DevelopmentConfig):
     mail.init_app(app)
     moment.init_app(app)
     babel.init_app(app)
+    bootstrap.init_app(app)
+
 
     from app.auth import bp as auth_bp
     from app.posts import bp as posts_bp
@@ -45,6 +49,8 @@ def create_app(config_class=DevelopmentConfig):
     app.register_blueprint(posts_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(errors_bp)
+
+
 
     if not app.debug and not app.testing:
         if not os.path.exists('logs'):
