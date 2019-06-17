@@ -10,7 +10,7 @@ class PostForm(FlaskForm):
     content = TextAreaField(_('Content'), validators=[DataRequired(), Length(min=2)])
     status = SelectField('Post status',
                          choices=(
-                             (Post.STATUS_PUBLIC, 'Public'),
-                             (Post.STATUS_DRAFT, 'Draft')),
-                         coerce=int
-                         )
+                             (Post.PUBLIC_STATUS, 'Public'),
+                             (Post.DRAFT_STATUS, 'Draft'),
+                             ),
+                            coerce=int)

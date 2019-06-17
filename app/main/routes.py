@@ -22,7 +22,7 @@ def before_request():
 @bp.route("/home", methods=['GET', 'POST'])
 def home():
     page = request.args.get('page', 1, type=int)
-    query = Post.query.order_by(Post.date_posted.desc())
+    query = Post.query.filter(Post.status==Post.PUBLIC_STATUS).order_by(Post.date_posted.desc())
     posts = query.paginate(page=page, per_page=5)
     return render_template('main/home.html', title='Home', posts=posts)
 

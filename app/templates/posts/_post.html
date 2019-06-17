@@ -11,6 +11,7 @@
             </h2>
             <br>
                 <span id="content{{ post.id }}">{{ post.content }}</span>
+                <p>Status: {{ post.display_post_status() }}</p>
         </div>
     </article>
 {% endblock content%}

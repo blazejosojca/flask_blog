@@ -4,7 +4,7 @@ from flask_babel import _
 from werkzeug.utils import redirect
 
 from app import db
-from app.models import Post, Tag
+from app.models import Post, User
 from app.posts import bp
 from app.posts.forms import PostForm
 
@@ -41,12 +41,14 @@ def post_update(post_id):
         post.title = form.title.data
         post.content = form.content.data
         post.status = form.status.data
+        db.session.add(post)
         db.session.commit()
         flash(_('Post has been updated!'), 'success')
         return redirect(url_for('posts.post_view', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
+        form.status.data = post.status
     return render_template('posts/create_post.html', title='Update Post', form=form, legend='Update Post')
 
 
@@ -56,13 +58,24 @@ def post_delete(post_id):
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
         abort(403)
-    post.status = Post.STATUS_DELETED
+    post.status = Post.DELETED_STATUS
     db.session.add(post)
     db.session.commit()
     flash(_('Post has been deleted'))
     return redirect(url_for('main.home'))
 
-@bp.route('/post/tags', methods=['POST','GET'])
-@login_required
-def tags():
-    pass
+
+@bp.route('/post/<username>', methods=['GET'])
+def list_posts_per_user_public(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    # order_by(Post.date_posted.desc())
+    posts = Post.query.filter_by(user_id=user.id)\
+        .order_by(Post.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('auth/user_details.html',
+                           user=user, posts=posts,
+                           title='User details',
+                           image_file=image_file)
+
