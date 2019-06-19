@@ -133,4 +133,6 @@ mail_config.py
 
 coverage_html_report/
 
-
+# whooshsqlalchemy
+.indexes/
+whoosh_index/

@@ -2,7 +2,6 @@
 import os
 from dotenv import load_dotenv
 from mail_config import MailSettings
-import flask_whooshalchemy as whooshalchemy
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(BASEDIR, '.env'))
@@ -19,7 +18,8 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard_to_guess_12345678'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') \
                     or 'sqlite:///' + os.path.join(BASEDIR, 'app.db')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    WHOOSH_BASE = os.path.join(BASEDIR, 'search.db')
     LANGUAGES = ['en', 'pl']
 
     MAIL_SERVER = MailSettings.server

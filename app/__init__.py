@@ -12,6 +12,7 @@ from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from config import Config, DevelopmentConfig
 from flask_bootstrap import Bootstrap
+import flask_whooshalchemy as wa
 
 
 db = SQLAlchemy()
@@ -36,7 +37,7 @@ def create_app(config_class=DevelopmentConfig):
     moment.init_app(app)
     babel.init_app(app)
     bootstrap.init_app(app)
-
+    wa.search_index(app, models.Post)
 
     from app.auth import bp as auth_bp
     from app.posts import bp as posts_bp
