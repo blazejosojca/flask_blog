@@ -2,6 +2,7 @@
 import os
 from dotenv import load_dotenv
 from mail_config import MailSettings
+import flask_whooshalchemy as whooshalchemy
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(BASEDIR, '.env'))

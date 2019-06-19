@@ -12,9 +12,7 @@
 
     </table>
     <hr>
-    {% for post in posts.items %}
-        {% include 'posts/_post.html' %}
-    {% endfor %}
+        {% include 'posts/post_list.html' %}
 
     {% for page_num in posts.iter_pages(left_edge=1, right_edge=1) %}
         {% if page_num %}

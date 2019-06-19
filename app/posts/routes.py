@@ -16,7 +16,8 @@ def create_post():
     if form.validate_on_submit():
         post = Post(title=form.title.data,
                     content=form.content.data,
-                    author=current_user)
+                    author=current_user,
+                    status=form.status.data)
         db.session.add(post)
         db.session.commit()
         flash(_("Post was created"), 'success')
@@ -66,7 +67,7 @@ def post_delete(post_id):
 
 
 @bp.route('/post/<username>', methods=['GET'])
-def list_posts_per_user_public(username):
+def list_posts_per_user(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
     # order_by(Post.date_posted.desc())
