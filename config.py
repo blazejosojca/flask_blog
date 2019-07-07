@@ -29,6 +29,7 @@ class Config(object):
     MAIL_PASSWORD = MailSettings.password
     ADMINS = ['testblazej2018@gmail.com']
     MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')
+    MAX_SEARCH_RESULTS = 20
 
 
 

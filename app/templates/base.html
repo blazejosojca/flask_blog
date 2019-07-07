@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 
 <head>
   <!-- Required meta tags -->
@@ -80,15 +80,23 @@
         {% block content %}
         {% endblock content %}
       </div>
+      {% if current_user.is_authenticated %}
+
       <div class="col-md-3">
+        <div>
+          <span>
+            Search
+          </span>
         {% block sidebar %}
-          <ul class="well nav nav-stacked">
-            <li><a href="#">Sidebar item</a></li>
-          </ul>
+        <form class="display: inline" action="{{ url_for('main.search') }}" method="post" name="search">
+          {{ g.search_form.hidden_tag() }} {{ g.search_form.search(size=20) }}
+        </form>
+      </div>
+
+
         {% endblock %}
-</div>
-    </div>
-  </main>
+      </div>
+      {% endif %}
 
 
   <!-- Optional JavaScript -->
