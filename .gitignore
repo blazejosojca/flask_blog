@@ -133,4 +133,9 @@ mail_config.py
 
 coverage_html_report/
 
+#whoosh_indexes
+whoosh_index
+.indexes/
+
+
 
