@@ -1,4 +1,5 @@
-from flask import url_for, render_template, flash, request, abort, jsonify
+from flask import (url_for, render_template,
+                   flash, request, abort)
 from flask_login import current_user, login_required
 from flask_babel import _
 from werkzeug.utils import redirect
@@ -6,7 +7,11 @@ from werkzeug.utils import redirect
 from app import db
 from app.models import Post, User
 from app.posts import bp
-from app.posts.forms import PostForm
+from app.posts.forms import PostForm, SearchForm
+from app.main.routes import before_request
+
+from app import Config
+from flask_whooshalchemy import search_index
 
 
 @bp.route('/post/new', methods=['GET', 'POST'])
@@ -79,4 +84,3 @@ def list_posts_per_user(username):
                            user=user, posts=posts,
                            title='User details',
                            image_file=image_file)
-

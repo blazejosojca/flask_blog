@@ -1,4 +1,4 @@
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, Form
 from flask_babel import _
 from wtforms import StringField, TextAreaField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Length
@@ -14,3 +14,6 @@ class PostForm(FlaskForm):
                              (Post.DRAFT_STATUS, 'Draft'),
                              ),
                             coerce=int)
+
+class SearchForm(Form):
+    search = StringField('search', validators=[DataRequired()])
