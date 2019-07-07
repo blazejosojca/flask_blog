@@ -18,6 +18,9 @@ from app.auth.forms import (RegistrationForm,
                             DeleteUserForm)
 
 
+
+
+
 @bp.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:

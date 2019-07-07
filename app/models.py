@@ -6,6 +6,7 @@ from flask import current_app
 from datetime import datetime
 from werkzeug.security import (generate_password_hash,
                                check_password_hash)
+from whoosh.analysis import StemmingAnalyzer
 
 
 @login.user_loader
@@ -50,7 +51,10 @@ def verify_reset_password_token(token):
 
 
 class Post(db.Model):
-    __searchable__ = ['body']
+
+    __searchable__ = ['title', 'content']
+    __analyzer__ = StemmingAnalyzer()
+
     PUBLIC_STATUS = 0
     DRAFT_STATUS = 1
     DELETED_STATUS = 2
@@ -61,18 +65,16 @@ class Post(db.Model):
                             default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    status =  db.Column(db.SmallInteger, default=DRAFT_STATUS)
+    status = db.Column(db.SmallInteger)
 
     def display_post_status(self):
         if self.status == self.PUBLIC_STATUS:
             output = 'Public'
         elif self.status == self.DRAFT_STATUS:
             output = 'Draft'
-        else:
+        elif self.status == self.DELETED_STATUS:
             output = 'Deleted'
         return output
 
-
     def __repr__(self):
         return '<Post - {0}, {1}>'.format(self.title, self.date_posted)
-

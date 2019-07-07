@@ -1,4 +1,5 @@
-from flask import url_for, render_template, flash, request, abort, jsonify
+from flask import (url_for, render_template,
+                   flash, request, abort)
 from flask_login import current_user, login_required
 from flask_babel import _
 from werkzeug.utils import redirect
@@ -6,7 +7,11 @@ from werkzeug.utils import redirect
 from app import db
 from app.models import Post, User
 from app.posts import bp
-from app.posts.forms import PostForm
+from app.posts.forms import PostForm, SearchForm
+from app.main.routes import before_request
+
+from app import Config
+from flask_whooshalchemy import search_index
 
 
 @bp.route('/post/new', methods=['GET', 'POST'])
@@ -16,7 +21,8 @@ def create_post():
     if form.validate_on_submit():
         post = Post(title=form.title.data,
                     content=form.content.data,
-                    author=current_user)
+                    author=current_user,
+                    status=form.status.data)
         db.session.add(post)
         db.session.commit()
         flash(_("Post was created"), 'success')
@@ -66,7 +72,7 @@ def post_delete(post_id):
 
 
 @bp.route('/post/<username>', methods=['GET'])
-def list_posts_per_user_public(username):
+def list_posts_per_user(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
     # order_by(Post.date_posted.desc())
@@ -78,4 +84,3 @@ def list_posts_per_user_public(username):
                            user=user, posts=posts,
                            title='User details',
                            image_file=image_file)
-
