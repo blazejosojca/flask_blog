@@ -1,5 +1,5 @@
 from flask import (url_for, render_template,
-                   flash, request, abort)
+                   flash, request, abort, g)
 from flask_login import current_user, login_required
 from flask_babel import _
 from werkzeug.utils import redirect
@@ -12,6 +12,12 @@ from app.main.routes import before_request
 
 from app import Config
 from flask_whooshalchemy import search_index
+
+@bp.before_request
+def before_request():
+    g.user = current_user
+    if g.user.is_authenticated:
+        g.search_form = SearchForm()
 
 
 @bp.route('/post/new', methods=['GET', 'POST'])

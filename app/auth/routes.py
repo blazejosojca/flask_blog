@@ -1,4 +1,4 @@
-from flask import url_for, render_template, flash, request
+from flask import url_for, render_template, flash, request, g
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_babel import lazy_gettext as _l
 from werkzeug.urls import url_parse
@@ -15,10 +15,15 @@ from app.auth.forms import (RegistrationForm,
                             UpdateUserForm,
                             RequestResetForm,
                             ResetPasswordForm,
-                            DeleteUserForm)
+                            DeleteUserForm,
+                            )
+from app.posts.forms import SearchForm
 
-
-
+@bp.before_request
+def before_request():
+    g.user = current_user
+    if g.user.is_authenticated:
+        g.search_form = SearchForm()
 
 
 @bp.route("/register", methods=['GET', 'POST'])

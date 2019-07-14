@@ -13,7 +13,6 @@
                     <p class="text-secondary">Email: {{ current_user.email }}</p>
                 </div>
         </div>
-
         <div>
                 {% if user.about_me %}
                 <p>{{user.about_me}}</p>
@@ -29,6 +28,8 @@
             <a class="btn btn-warning btn-small" href="{{ url_for('auth.user_delete') }}"> {{ _('Delete Account') }}</a>
         </div>
     </div>
-
-
 {% endblock content%}
+
+{% block sidebar %}
+    {% include 'main/_search.html' %}
+{% endblock %}
