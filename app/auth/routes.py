@@ -120,6 +120,8 @@ def user_delete():
 
 
 @bp.route('/user/<username>', methods=['GET'])
+#TODO -> add variables 'public, drafts, deleted' for feature which allow to sees posts by categories
+
 def user_posts(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()

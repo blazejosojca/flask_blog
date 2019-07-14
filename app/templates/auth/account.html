@@ -20,7 +20,15 @@
                 {% if user.last_seen %}
                 <p>{{ _('Last seen on') }} : {{ moment(user.last_seen).format('LLL', refresh=True) }}</p>
                 {% endif %}
-            <a class="btn btn-outline-info" href="{{ url_for('auth.user_posts', username=current_user.username) }}"> {{ _('See posts') }} </a>
+            <a class="btn btn-outline-info" href="{{ url_for('auth.user_posts', username=current_user.username) }}">
+                {{ _('See all posts') }}
+            </a>
+            <a class="btn btn-outline-info" href="#', username=current_user.username) }}">
+                {{ _('See public posts') }}
+            </a>
+            <a class="btn btn-outline-info" href="{{ url_for('auth.user_posts', username=current_user.username) }}">
+                {{ _('See drafts') }}
+            </a>
         </div>
     </div>
     <div class="content-section">
