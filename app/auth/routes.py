@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from flask import url_for, render_template, flash, request, g
 from flask_login import current_user, login_user, logout_user, login_required
-from flask_babel import lazy_gettext as _l
+from flask_babel import lazy_gettext as _l, get_locale
 from werkzeug.urls import url_parse
 from werkzeug.utils import redirect
 
@@ -19,11 +21,16 @@ from app.auth.forms import (RegistrationForm,
                             )
 from app.posts.forms import SearchForm
 
+
 @bp.before_request
 def before_request():
     g.user = current_user
     if g.user.is_authenticated:
+        g.user.last_seen = datetime.utcnow()
+        db.session.add(g.user)
+        db.session.commit()
         g.search_form = SearchForm()
+    g.locale = str(get_locale())
 
 
 @bp.route("/register", methods=['GET', 'POST'])
@@ -119,21 +126,22 @@ def user_delete():
     return render_template('auth/user_delete.html', title='User delete', form=form)
 
 
-@bp.route('/user/<username>', methods=['GET'])
-#TODO -> add variables 'public, drafts, deleted' for feature which allow to sees posts by categories
-
-def user_posts(username):
-    page = request.args.get('page', 1, type=int)
-    user = User.query.filter_by(username=username).first_or_404()
-    # order_by(Post.date_posted.desc())
-    posts = Post.query.filter_by(user_id=user.id)\
-        .order_by(Post.date_posted.desc())\
-        .paginate(page=page, per_page=5)
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('auth/user_details.html',
-                           user=user, posts=posts,
-                           title='User details',
-                           image_file=image_file)
+# @bp.route('/user/<username>', methods=['GET'])
+# #TODO -> add variables 'public, drafts, deleted' for feature which allow to sees posts by categories
+#
+# def user_posts(username, category):
+#     page = request.args.get('page', 1, type=int)
+#     user = User.query.filter_by(username=username).first_or_404()
+#     # order_by(Post.date_posted.desc())
+#     posts = Post.query.filter_by(user_id=user.id)\
+#         .filter_by(statusposts=category)\
+#         .order_by(Post.date_posted.desc())\
+#         .paginate(page=page, per_page=5)
+#     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+#     return render_template('auth/posts_user_details.html',
+#                            user=user, posts=posts,
+#                            title='User details',
+#                            image_file=image_file)
 
 
 @bp.route("/reset_password", methods=['GET', 'POST'])

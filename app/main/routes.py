@@ -11,7 +11,7 @@ from app.main import bp
 from app.models import Post
 
 from app.posts.forms import SearchForm
-
+from app.auth.routes import before_request
 
 @bp.before_request
 def before_request():
@@ -36,7 +36,6 @@ def home():
 @bp.route('/search', methods=['POST'])
 @login_required
 def search():
-    sear_form = SearchForm()
     if not g.search_form.validate_on_submit():
         return redirect(url_for('main.home'))
     return redirect(url_for('main.search_results',

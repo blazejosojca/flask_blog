@@ -77,4 +77,4 @@ class Post(db.Model):
         return output
 
     def __repr__(self):
-        return '<Post - {0}, {1}>'.format(self.title, self.date_posted)
+        return '<Post - {0}, {1}, status {2}>'.format(self.title, self.date_posted, self.status)
