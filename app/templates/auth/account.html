@@ -25,16 +25,17 @@
                username=current_user.username) }}">
                 {{ _('See all posts') }}
             </a>
-<!--            <a class="btn btn-outline-info"
-               href="{{ url_for('posts.list_public_posts_per_user',
-               username=current_user.username) }}">
+            <a class="btn btn-outline-info"
+               href="{{ url_for('posts.list_posts_per_user_and_status',
+               username=current_user.username, status=0) }}">
                 {{ _('See public posts') }}
             </a>
+
             <a class="btn btn-outline-info"
-               href="{{ url_for('posts.list_drafts_posts_per_user',
-               username=current_user.username) }}">
+               href="{{ url_for('posts.list_posts_per_user_and_status',
+               username=current_user.username, status=1) }}">
                 {{ _('See drafts') }}
-            </a>-->
+            </a>
         </div>
     </div>
     <div class="content-section">

@@ -79,33 +79,43 @@ def post_delete(post_id):
     flash(_('Post has been deleted'))
     return redirect(url_for('main.home'))
 
+
+def set_posts_for_user(username, status, page):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(user_id=user.id, status=status) \
+        .order_by(Post.date_posted.desc()) \
+        .paginate(page=page, per_page=5)
+    return (user, posts)
+
+
+def set_page_and_image_file():
+    page = request.args.get('page', 1, type=int)
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return (page, image_file)
+
+
 @login_required
 @bp.route('/post/<username>', methods=['GET', 'POST'])
 def list_posts_per_user(username):
-    page = request.args.get('page', 1, type=int)
+    page, image_file = set_page_and_image_file()
     user = User.query.filter_by(username=username).first_or_404()
-    # user_posts = Post.query.filter_by(user_id=user.id)
-    # posts = user_posts.filter(Post.status.in_(status))\
-    #     .order_by(Post.date_posted.desc())\
-    #     .paginate(page=page, per_page=5)
     posts = Post.query.filter_by(user_id=user.id) \
         .order_by(Post.date_posted.desc()) \
         .paginate(page=page, per_page=5)
+    return render_template('posts/posts_user_details.html',
+                           user=user, posts=posts,
+                           title='User details',
+                           image_file=image_file)
 
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+@login_required
+@bp.route('/post/public/<username>/<int:status>', methods=['GET', 'POST'])
+def list_posts_per_user_and_status(username, status):
+    page, image_file = set_page_and_image_file()
+    user, posts = set_posts_for_user(username, status, page)
     return render_template('posts/posts_user_details.html',
                            user=user, posts=posts,
                            title='User details',
                            image_file=image_file)
 
 
-@login_required
-@bp.route('/post/public/<username>', methods=['GET', 'POST'])
-def list_public_posts_per_user(username):
-    pass
 
-
-@login_required
-@bp.route('/post/drafts/<username>', methods=['GET', 'POST'])
-def list_drafts_posts_per_user(username):
-    pass
