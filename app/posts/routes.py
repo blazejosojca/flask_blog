@@ -1,4 +1,4 @@
-from _datetime import datetime
+from datetime import datetime
 
 from flask import (url_for, render_template,
                    flash, request, abort, g)
@@ -85,13 +85,13 @@ def set_posts_for_user(username, status, page):
     posts = Post.query.filter_by(user_id=user.id, status=status) \
         .order_by(Post.date_posted.desc()) \
         .paginate(page=page, per_page=5)
-    return (user, posts)
+    return user, posts
 
 
 def set_page_and_image_file():
     page = request.args.get('page', 1, type=int)
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return (page, image_file)
+    return page, image_file
 
 
 @login_required
@@ -107,6 +107,7 @@ def list_posts_per_user(username):
                            title='User details',
                            image_file=image_file)
 
+
 @login_required
 @bp.route('/post/public/<username>/<int:status>', methods=['GET', 'POST'])
 def list_posts_per_user_and_status(username, status):
@@ -116,6 +117,3 @@ def list_posts_per_user_and_status(username, status):
                            user=user, posts=posts,
                            title='User details',
                            image_file=image_file)
-
-
-

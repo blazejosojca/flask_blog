@@ -7,7 +7,7 @@ from werkzeug.urls import url_parse
 from werkzeug.utils import redirect
 
 from app import db
-from app.models import User, Post
+from app.models import User
 
 from app.auth import bp
 from app.auth.email import send_password_reset_email

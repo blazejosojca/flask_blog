@@ -69,12 +69,11 @@ class Post(db.Model):
 
     def display_post_status(self):
         if self.status == self.PUBLIC_STATUS:
-            output = 'Public'
+            return 'Public'
         elif self.status == self.DRAFT_STATUS:
-            output = 'Draft'
+            return 'Draft'
         elif self.status == self.DELETED_STATUS:
-            output = 'Deleted'
-        return output
+            return'Deleted'
 
     def __repr__(self):
         return '<Post - {0}, {1}, status {2}>'.format(self.title, self.date_posted, self.status)

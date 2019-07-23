@@ -3,7 +3,6 @@ from datetime import datetime
 from flask import request, render_template, g, url_for
 from flask_login import current_user, login_required
 from flask_babel import get_locale
-from guess_language import guess_language
 from werkzeug.utils import redirect
 
 from app import db, Config
@@ -11,7 +10,7 @@ from app.main import bp
 from app.models import Post
 
 from app.posts.forms import SearchForm
-from app.auth.routes import before_request
+
 
 @bp.before_request
 def before_request():
@@ -28,7 +27,7 @@ def before_request():
 @bp.route("/home", methods=['GET', 'POST'])
 def home():
     page = request.args.get('page', 1, type=int)
-    query = Post.query.filter(Post.status==Post.PUBLIC_STATUS).order_by(Post.date_posted.desc())
+    query = Post.query.filter(Post.status == Post.PUBLIC_STATUS).order_by(Post.date_posted.desc())
     posts = query.paginate(page=page, per_page=5)
     return render_template('main/home.html', title='Home', posts=posts)
 
@@ -54,4 +53,3 @@ def search_results(query):
 @bp.route("/about")
 def about():
     return render_template('main/about.html', title='About')
-
