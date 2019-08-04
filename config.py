@@ -30,6 +30,7 @@ class Config(object):
     ADMINS = ['testblazej2018@gmail.com']
     MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')
     MAX_SEARCH_RESULTS = 20
+    FLASK_ADMIN_SWATCH = 'cerulean'
 
 
 

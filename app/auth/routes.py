@@ -59,13 +59,11 @@ def login():
         if user is not None and user.check_password(form.password.data):
             login_user(user, remember=form.remember.data)
             flash(_l('You were logged in!'), 'info')
-            if user.is_admin:
-                return redirect(url_for('admin.admin_dashboard'))
-            else:
-                next_page = request.args.get('next')
-                if not next_page or url_parse(next_page).netloc != '':
-                    next_page = url_for('main.home')
-                return redirect(next_page)
+
+            next_page = request.args.get('next')
+            if not next_page or url_parse(next_page).netloc != '':
+                next_page = url_for('main.home')
+            return redirect(next_page)
         else:
             flash(_l('Credentials are incorrect!'), 'warning')
             return redirect(url_for('auth.login'))

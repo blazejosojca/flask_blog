@@ -1,25 +1,20 @@
-from flask import abort, render_template
+from flask import abort, render_template, session, redirect, url_for, request
 from flask_login import current_user, login_required
+from flask_admin import Admin, BaseView
+from flask_admin.contrib.sqla import ModelView
 
-from app.admin import bp
-from app.models import User
-
-
-def check_admin():
-    if not current_user.is_admin:
-        abort(403)
+from app.models import User, Post
+from app import db, admin
 
 
-@bp.route('/dashboard', methods=['GET', 'POST'])
-@login_required
-def admin_dashboard():
-    check_admin()
-    return render_template('admin/dashboard.html', title='Dashboard')
 
+class MyModelView(ModelView):
+    def is_accessible(self):
+        return login.current_user.is_authrnticated
 
-@bp.route('/users_list', methods=['GET', 'POST'])
-@login_required
-def list_users():
-    check_admin()
-    users = User.query.all()
-    return render_template('admin/users_list.html', users=users, title='Users')
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect()
+
+admin.add_view(MyModelView(User, db.session))
+admin.add_view(MyModelView(Post, db.session))
+
