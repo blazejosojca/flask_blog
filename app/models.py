@@ -37,6 +37,7 @@ class User(UserMixin, db.Model):
                            default='default.jpg')
     password_hashed = db.Column(db.String(128), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
+    admin = db.Column(db.Boolean, default=False)
     about_me = db.Column(db.String(128))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow())
     roles = db.relationship('Role', secondary=roles_users,

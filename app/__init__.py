@@ -4,7 +4,6 @@ from logging.handlers import RotatingFileHandler
 
 
 from flask import Flask, request, current_app
-from flask_admin import Admin
 from flask_babel import Babel, lazy_gettext as _l
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -23,7 +22,6 @@ login.login_view = 'auth.login'
 login.login_message = _l('Please log in to access this page')
 mail = Mail()
 moment = Moment()
-admin = Admin(name='Dashboard', template_mode='bootstrap3')
 babel = Babel()
 bootstrap = Bootstrap()
 
@@ -34,7 +32,6 @@ def create_app(config_class=DevelopmentConfig):
 
     db.init_app(app)
     migrate.init_app(app, db)
-    admin.init_app(app)
     login.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
@@ -46,7 +43,6 @@ def create_app(config_class=DevelopmentConfig):
     from app.posts import bp as posts_bp
     from app.main import bp as main_bp
     from app.errors import bp as errors_bp
-    from app.admin import bp as admin_bp
 
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(posts_bp)
