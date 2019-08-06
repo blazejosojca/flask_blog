@@ -1,11 +1,14 @@
 from selenium.webdriver.common.by import By
 from func_tests.pages.base_page import BasePage
-from func_tests.locators.login_locators import LoginPageLocators
+
+from func_tests.pages.main_page import MainPage
 
 class LoginPage(BasePage):
 
-    def verify_login_page(self):
-        self.driver.fi
+    LOGIN_URL = MainPage.MAIN_PAGE_URL + '/auth/login'
+
+    def test_login_page_title(self, url):
+        self.get_title(url)
 
     def set_email(self):
         pass
@@ -22,5 +25,6 @@ class LoginPage(BasePage):
     def click_reset_password(self):
         pass
 
-    def click_redirect_to_register_page(self):
+    def click_redirect_to_register(self):
         pass
+
