@@ -35,19 +35,19 @@ class Config(object):
 
 
 class DevelopmentConfig(Config):
-    """ Configuration for development enviroment """
+    """ Configuration for development environment """
     DEVELOPMENT = True
     DEBUG = True
 
 
 
 class ProductionConfig(Config):
-    """ Configuration for production enviroment. Without debug mode. """
+    """ Configuration for production environment. Without debug mode. """
     ENV = 'production'
     DEBUG = False
 
 
 class StagingConfig(Config):
-    """ Configuration for staging enviroment """
+    """ Configuration for staging environment """
     DEVELOPMENT = True
     DEBUG = True

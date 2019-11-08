@@ -7,8 +7,6 @@ from flask import current_app
 from datetime import datetime
 from werkzeug.security import (generate_password_hash,
                                check_password_hash)
-from whoosh.analysis import StemmingAnalyzer
-
 
 @login.user_loader
 def load_user(user_id):
@@ -46,7 +44,7 @@ class User(UserMixin, db.Model):
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
-            current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+            current_app.load_json['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
     def set_password(self, password):
         self.password_hashed = generate_password_hash(password)
@@ -60,7 +58,7 @@ class User(UserMixin, db.Model):
 
 def verify_reset_password_token(token):
     try:
-        user_id = jwt.decode(token, current_app.config['SECRET_KEY'],
+        user_id = jwt.decode(token, current_app.load_json['SECRET_KEY'],
                              algorithms=['HS256'])['reset_password']
     except:
         return None
@@ -68,9 +66,6 @@ def verify_reset_password_token(token):
 
 
 class Post(db.Model):
-
-    __searchable__ = ['title', 'content']
-    __analyzer__ = StemmingAnalyzer()
 
     PUBLIC_STATUS = 0
     DRAFT_STATUS = 1

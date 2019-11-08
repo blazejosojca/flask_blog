@@ -123,6 +123,9 @@ app/static/profile_pics/*
 
 # logs
 /logs/
+*.log
+./func_tests/tests/*.log
+
 
 #config_files
 mail_config.py
@@ -141,3 +144,4 @@ whoosh_index
 .indexes/
 whoosh_index/
 >>>>>>> search_feature
+

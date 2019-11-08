@@ -5,7 +5,7 @@ from unittest import TestCase
 from datetime import datetime
 
 from app import create_app
-from func_tests.test_config import TestConfig
+from func_tests.Configuration import TestConfig
 
 
 class BaseTest(TestCase):
@@ -14,10 +14,9 @@ class BaseTest(TestCase):
         app = create_app(TestConfig)
         return app
 
-
     @classmethod
     def setUpClass(self):
-        self.driver = TestConfig.BROWSER
+        self.driver = TestConfig().browser()
         print("Run started at:" + str(datetime.utcnow()))
 
         self.driver.implicitly_wait(20)
@@ -25,9 +24,8 @@ class BaseTest(TestCase):
 
     @classmethod
     def tearDownClass(self):
-        self.driver = TestConfig.BROWSER
+        self.driver.close()
         if (self.driver!=None):
-            print("Test enviroment destroyed.")
+            print("Test environment destroyed.")
             print("Run completed at: " + str(datetime.utcnow()))
-            self.driver.close()
-            self.driver.quit()
+            # self.driver.quit()

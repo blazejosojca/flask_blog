@@ -1,12 +1,9 @@
 __author__ = "blazos"
 
 from .base_test import BaseTest
-from func_tests.pages.main_page import MainPage
-from func_tests.locators.main_locators import MainPageLocators
-from func_tests.pages.base_page import BasePage
-from func_tests.pages.login_page import LoginPage
-
-
+from func_tests.pages.home_page import HomePage
+from func_tests.locators.home_page_locators import MainPageLocators
+from func_tests.locators.login_locators import LoginLocators
 
 class LoginTest(BaseTest):
     """
@@ -17,11 +14,14 @@ class LoginTest(BaseTest):
     """
     def test_login_page(self):
         browser = self.driver
-        main_page = MainPage(browser)
-        main_page.navigate_to_url(MainPage.MAIN_PAGE_URL)
-        element = browser.find_element_by_xpath(MainPageLocators.NAV_LINK_LOGIN)
-        element.click()
-        browser.implicitly_wait(15)
+        HomePage(browser, HomePage.base_url)
+        nav_link = browser.find_element_by_xpath(MainPageLocators.NAV_LINK_LOGIN)
+        nav_link.click()
+        browser.implicitly_wait(30)
+        email_field = browser.find_element_by_xpath(LoginLocators.XPATH_EMAIL_FIELD)
+        email_field.clear()
+        email_field.send_keys()
+
         page_title = browser.title
 
         self.assertEqual(page_title, 'Flask Blog - Login')
