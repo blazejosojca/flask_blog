@@ -19,7 +19,6 @@ coverage = "==4.5.3"
 cryptography = "==2.6.1"
 dateparser = "==0.7.1"
 dominate = "==2.3.5"
-flask-whooshalchemy3 = "==0.1.2"
 idna = "==2.8"
 itsdangerous = "==1.1.0"
 jwt = "==0.6.1"
@@ -75,7 +74,6 @@ PyMySQL = "==0.9.3"
 static_parameters = "==0.4"
 Werkzeug = "==0.15.5"
 WTForms = "==2.2.1"
-SQLAlchemy = "==1.1.13"
 
 [pipenv]
 allow_prereleases =  true

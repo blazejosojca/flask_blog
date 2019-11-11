@@ -1,6 +1,5 @@
 __author__ = "blazos"
 
-import os
 from unittest import TestCase
 from datetime import datetime
 

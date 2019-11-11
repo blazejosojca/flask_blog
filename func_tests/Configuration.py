@@ -1,25 +1,30 @@
-import json
-import unittest
-import os
 from selenium.webdriver import Chrome, Firefox, Opera
+from config import BASEDIR
+from config import Config
+import os
+from app import db
+from app.models import User, Post
 from func_tests.helpers.func_helpers import load_json
-
 
 CONFIG_FILE = 'config.json'
 UTILS_FILE = 'utils.json'
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-CONF_FILE_PATH = os.path.join(THIS_FOLDER, CONFIG_FILE)
+CONFIG_FILE_PATH = os.path.join(THIS_FOLDER, CONFIG_FILE)
+UTILS_FILE_PATH = os.path.join(THIS_FOLDER, CONFIG_FILE)
 DEFAULT_WAIT_TIME = 10
 
 
-class TestConfig(object):
+class TestConfig(Config):
+    TESTING = True
+    WTF_CSRF_ENABLED = False
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASEDIR, 'func_test.db')
 
     def config_browser(self):
         """
         Valid values for browser key
         :return: name of browser from data dict
         """
-        data = load_json(CONF_FILE_PATH)
+        data = load_json(CONFIG_FILE_PATH)
         if 'browser' not in data:
             raise Exception('The config file does not contain "browser"')
         elif data['browser'] not in data['supported_browsers']:
@@ -31,7 +36,7 @@ class TestConfig(object):
         Verify and valid values from wait_time key
         :return:
         """
-        data = load_json(CONF_FILE_PATH)
+        data = load_json(CONFIG_FILE_PATH)
         return data['wait_time'] if 'wait_time' in data else DEFAULT_WAIT_TIME
 
     def browser(self):
@@ -50,32 +55,27 @@ class TestConfig(object):
 
         return driver
 
-    @classmethod
-    def setUpClass(self):
-        self.driver = TestConfig().browser()
+    def set_up_test_db(self):
+        data = load_json(UTILS_FILE)
 
-    def assert_element_text(self, xpath, expected_text):
-        """
-        Compare expected text with observed value from web element
-        :param xpath: xpath to element with text to be observed
-        :param expected_text: text what we expecting to be found
-        :return: None
-        """
-        element = self.driver.find_element_by_xpath(xpath)
-        return self.assertEqual(element.text, expected_text,
-                                f'Expected message differ from {expected_text}')
+        db.create_all()
 
-    def assert_title(self, url, expected_text):
-        """
+        user = User(username=data["test_user_name"],
+                    email=data["test_user_mail"])
+        user.set_password(data("test_user_password"))
+        post = Post(title='test title', content='test content', author=user)
+        db.session.add(user)
+        db.session.add(post)
+        db.session.commit()
 
-        :param url:
-        :param expected_text:
-        :return:
-        """
-        self.driver.get(url)
-        actual_title = self.driver.title
-        self.assertEqual(expected_text, actual_title, f'Expected {expected_text} differ from actual driver,')
+        admin = User(username=data["test_admin_name"],
+                     email=data["test_admin_mail"])
+        admin.set_password(data["test_admin_password"])
+        admin.is_admin = True
 
-    @classmethod
-    def tearDownClass(self):
-        self.driver.close()
+        db.session.add(admin)
+        db.session.commit()
+
+    def tear_down_testdb(self):
+        db.session.remove()
+        db.drop_all()
