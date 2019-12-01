@@ -1,9 +1,0 @@
-{
-    "test_user_name": "automation_test_user",
-    "test_user_email": "automation_test@mail.com",
-    "test_user_password":"automation_password",
-    "test_admin_name": "automation_test_admin",
-    "test_admin_email": "automation_admin@mail.com",
-    "test_admin_password": "automation_admin123",
-    "test_incorrect_password" : "incorrect"
-}
