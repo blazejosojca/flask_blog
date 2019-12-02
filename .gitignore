@@ -128,7 +128,6 @@ app/static/profile_pics/*
 
 
 #config_files
-mail_config.py
 
 coverage_html_report/
 
