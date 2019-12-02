@@ -19,7 +19,6 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') \
                     or 'sqlite:///' + os.path.join(BASEDIR, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    WHOOSH_BASE = os.path.join(BASEDIR, 'search.db')
     LANGUAGES = ['en', 'pl']
 
     MAIL_SERVER = MailSettings.server
